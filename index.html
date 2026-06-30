@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<!-- Leaflet.js (오픈소스 인터랙티브 지도) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <style>
 :root {
   /* Brand palette (확정 — 클라이언트 브리프 v1 §6, 2026-06-22) */
@@ -264,6 +266,21 @@ a { color: inherit; }
   justify-content: space-between;
   cursor: pointer;
 }
+.fork-card::after {
+  content: '';
+  position: absolute;
+  bottom: -42px; right: -30px;
+  width: 180px; height: 180px;
+  background: url('./assets/logo_mascot.png') no-repeat center / contain;
+  opacity: 0.09;
+  pointer-events: none;
+  transition: transform 0.7s cubic-bezier(0.2,0.8,0.3,1), opacity 0.7s;
+}
+.fork-card.film::after { opacity: 0.13; }
+.fork-card:hover::after {
+  transform: translate(-12px, -12px);
+  opacity: 0.16;
+}
 .fork-card:hover {
   transform: translateY(-6px);
   box-shadow: var(--shadow-xl);
@@ -392,25 +409,56 @@ section { padding: 112px 32px; }
   position: sticky;
   top: 110px;
   aspect-ratio: 4/5;
-  border-radius: 2px;
-  background: linear-gradient(160deg, var(--bg-deep) 0%, #E0D2BB 100%);
+  border-radius: 3px;
+  background: 
+    radial-gradient(ellipse at 50% 38%, rgba(244,239,231,0) 0%, rgba(212,184,150,0.18) 100%),
+    linear-gradient(165deg, var(--bg-deep) 0%, #DCC9AC 100%);
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: center;
-  padding: 32px;
+  padding: 8% 12% 0;
   overflow: hidden;
+  box-shadow: 0 1px 1px rgba(28,94,126,0.04);
 }
-.intro-mascot svg { width: 100%; height: 100%; }
+.intro-mascot .mascot-illust {
+  display: block;
+  width: 76%;
+  max-width: 280px;
+  height: auto;
+  margin: 0 auto;
+  filter: drop-shadow(0 6px 18px rgba(75,47,24,0.08));
+  transition: transform 0.6s cubic-bezier(0.2,0.8,0.3,1);
+}
+.intro-mascot:hover .mascot-illust {
+  transform: translateY(-4px);
+}
 .mascot-caption {
   position: absolute;
-  bottom: 20px; left: 24px; right: 24px;
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  color: var(--ink-soft);
+  bottom: 26px; left: 28px; right: 28px;
   text-align: center;
-  opacity: 0.7;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
-.mascot-caption strong { color: var(--teal); font-weight: 700; }
+.mascot-name {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+.mascot-name strong {
+  color: var(--teal);
+  font-weight: 700;
+}
+.mascot-story {
+  font-size: 12px;
+  color: var(--shell);
+  font-style: italic;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  opacity: 0.78;
+}
 
 .intro-text h3 {
   font-weight: 700;
@@ -457,12 +505,59 @@ section { padding: 112px 32px; }
   letter-spacing: 0.04em;
 }
 
+/* 갯것이의 발자취 - 연혁 */
+.history-list {
+  list-style: none;
+  margin-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.history-list li {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+}
+.history-list .hist-year {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.history-list .hist-text {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.65;
+}
+.history-list li.now .hist-year {
+  color: var(--teal-deep);
+  font-weight: 800;
+}
+.history-list .hist-now-badge {
+  display: inline-block;
+  background: var(--teal);
+  color: white;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+@media (max-width: 600px) {
+  .history-list li { grid-template-columns: 1fr; gap: 6px; }
+}
+
 /* ============================================================
    ECO — 생태관광 (primary, teal 계열)
    ============================================================ */
 .eco {
   background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
   position: relative;
+  overflow: hidden;
 }
 .eco::before {
   content: '01';
@@ -583,6 +678,7 @@ section { padding: 112px 32px; }
 .films {
   background: var(--bg-deep);
   position: relative;
+  overflow: hidden;
 }
 .films::before {
   content: '02';
@@ -956,86 +1052,194 @@ section { padding: 112px 32px; }
 .schedule-note p { margin-bottom: 4px; }
 
 /* ============================================================
-   LOCATION
+   LOCATION — Leaflet 인터랙티브 지도
    ============================================================ */
 .location { background: var(--bg-deep); }
-.location-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 56px;
-  align-items: start;
-}
-@media (max-width: 900px) {
-  .location-grid { grid-template-columns: 1fr; gap: 36px; }
-}
-.location-map {
-  aspect-ratio: 4/3;
-  background: linear-gradient(135deg, var(--teal-deep), var(--teal));
-  border-radius: 3px;
-  overflow: hidden;
+
+.map-wrap {
   position: relative;
-  box-shadow: var(--shadow-lg);
+  background: var(--bg-card);
+  border-radius: 4px;
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow);
+  margin-bottom: 56px;
+  overflow: hidden;
+  isolation: isolate;
+  z-index: 1;
+}
+.jeju-map {
+  width: 100%;
+  height: 520px;
+  border-radius: 3px;
+  background: #fff;
+  z-index: 1;
+  position: relative;
+}
+@media (max-width: 700px) {
+  .jeju-map { height: 420px; }
+  .map-wrap { padding: 12px 12px 14px; }
+}
+
+/* Leaflet 커스텀 마커 (divIcon) */
+.venue-marker {
+  background: var(--sand-deep);
+  border: 2.5px solid #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.22);
+  transition: transform 0.2s;
+}
+.venue-marker.film { background: var(--teal); }
+.venue-marker:hover { transform: scale(1.15); }
+.venue-marker.primary {
+  width: 22px;
+  height: 22px;
+  background: var(--teal);
+  box-shadow:
+    0 0 0 6px rgba(28,94,126,0.18),
+    0 3px 10px rgba(0,0,0,0.28);
+}
+.venue-marker.primary::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 6px; height: 6px;
+  background: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Leaflet 팝업 커스텀 */
+.leaflet-popup-content-wrapper {
+  border-radius: 4px;
+  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+  box-shadow: 0 8px 24px rgba(20,70,88,0.18);
+  padding: 4px 6px;
+}
+.leaflet-popup-content {
+  margin: 14px 18px;
+  line-height: 1.55;
+  font-size: 13px;
+}
+.popup-venue-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  display: block;
+  margin-bottom: 4px;
+}
+.popup-venue-cat {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin-bottom: 8px;
+}
+.popup-venue-cat.film { background: rgba(28,94,126,0.1); color: var(--teal); }
+.popup-venue-cat.eco { background: rgba(184,151,112,0.18); color: var(--shell); }
+.popup-venue-desc {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+}
+.popup-venue-addr {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.01em;
+}
+.leaflet-container a.leaflet-popup-close-button { color: var(--ink-faint); }
+.leaflet-container { font-family: inherit; background: #F0EBE0; }
+.leaflet-control-attribution {
+  background: rgba(255,255,255,0.85);
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 8px 0;
+  margin-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 13px;
+}
+.legend-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-.location-map iframe { border:0; width:100%; height:100%; }
-.location-map-placeholder {
-  text-align: center;
-  color: rgba(255,255,255,0.7);
-  padding: 32px;
-}
-.location-map-placeholder .label {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  opacity: 0.7;
-}
-.location-map-placeholder .text {
-  font-size: 15px;
-  line-height: 1.6;
-}
-.location-info h3 {
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.018em;
-  color: var(--ink);
-  margin-bottom: 16px;
-  line-height: 1.25;
-}
-.location-info p {
-  font-size: 16px;
+  gap: 8px;
   color: var(--ink-soft);
-  margin-bottom: 28px;
-  line-height: 1.75;
+  font-weight: 500;
 }
-.location-list { list-style: none; display: grid; gap: 16px; }
-.location-list li {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 16px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 14px;
+.legend-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  display: inline-block;
 }
-.location-list .lbl {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--teal);
-  font-weight: 700;
-  padding-top: 2px;
-}
-.location-list .val {
-  color: var(--ink);
-  line-height: 1.65;
-}
-.location-list .val small {
-  display: block;
-  font-size: 13px;
+.legend-dot.film { background: var(--teal); }
+.legend-dot.eco { background: var(--sand-deep); }
+.legend-note {
+  font-size: 12px;
   color: var(--ink-faint);
-  margin-top: 2px;
+  margin-left: auto;
+  letter-spacing: 0.01em;
+}
+@media (max-width: 700px) {
+  .legend-note { margin-left: 0; flex-basis: 100%; }
+}
+
+/* 권역 정보 그리드 */
+.location-grid-info {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+}
+@media (max-width: 760px) {
+  .location-grid-info { grid-template-columns: 1fr; gap: 32px; }
+}
+.loc-info-block {
+  background: var(--bg-card);
+  border-radius: 4px;
+  padding: 32px 28px;
+  box-shadow: var(--shadow);
+}
+.loc-info-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.loc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.loc-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0;
+}
+.loc-list strong {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.loc-list span {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.55;
 }
 
 /* ============================================================
@@ -1050,8 +1254,8 @@ section { padding: 112px 32px; }
   max-width: 1280px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
-  gap: 48px;
+  grid-template-columns: 1.3fr 0.9fr 1fr 1.6fr;
+  gap: 44px;
 }
 @media (max-width: 900px) {
   .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
@@ -1099,38 +1303,45 @@ section { padding: 112px 32px; }
 .footer-orgs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 18px;
 }
 .footer-org {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
 }
-.footer-org-mark {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
+.footer-org .role {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  font-weight: 700;
+  display: block;
+}
+.footer-org-logo-wrap {
+  background: white;
+  border-radius: 4px;
+  padding: 16px 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--sand-light);
+  height: 80px;
+  width: 100%;
+  box-sizing: border-box;
 }
-.footer-org-text {
-  font-size: 13px;
-  line-height: 1.4;
-}
-.footer-org-text .role {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
+.footer-org-logo-wrap img {
   display: block;
-  margin-bottom: 2px;
+  width: 100%;
+  max-height: 48px;
+  height: auto;
+  object-fit: contain;
 }
-.footer-org-text .name { color: white; font-weight: 600; }
+.footer-org-name {
+  font-size: 12px;
+  color: rgba(255,255,255,0.62);
+  letter-spacing: 0.01em;
+  margin-top: 2px;
+}
 .footer-bottom {
   max-width: 1280px;
   margin: 56px auto 0;
@@ -1162,7 +1373,7 @@ section { padding: 112px 32px; }
 <nav class="nav">
   <div class="nav-inner">
     <a href="#" class="nav-logo">
-      <img class="nav-logo-mark" src="./assets/logo_mark.png" alt="갯것이 영화제 × 생태관광 주간 로고">
+      <img class="nav-logo-mark" src="./assets/logo_mark_lineart.png" alt="갯것이 영화제 × 생태관광 주간 로고">
       <span class="nav-logo-name">갯것이 영화제<span class="amp-full"> × </span><span style="display:none" class="amp-short">×</span>생태관광 주간</span>
     </a>
     <div class="nav-links">
@@ -1184,54 +1395,28 @@ section { padding: 112px 32px; }
       <!-- 모래 + 바다 그라데이션 -->
       <defs>
         <linearGradient id="sand-grad" x1="0" y1="0.4" x2="0" y2="1">
-          <stop offset="0%" stop-color="#2A4456" stop-opacity="0.4"/>
-          <stop offset="60%" stop-color="#7A6342" stop-opacity="0.55"/>
-          <stop offset="100%" stop-color="#5B4A2E" stop-opacity="0.7"/>
+          <stop offset="0%" stop-color="#2A4456" stop-opacity="0.35"/>
+          <stop offset="60%" stop-color="#7A6342" stop-opacity="0.45"/>
+          <stop offset="100%" stop-color="#5B4A2E" stop-opacity="0.6"/>
         </linearGradient>
-        <radialGradient id="light" cx="0.25" cy="0.3" r="0.7">
-          <stop offset="0%" stop-color="#D4B896" stop-opacity="0.32"/>
+        <radialGradient id="light" cx="0.5" cy="0.35" r="0.65">
+          <stop offset="0%" stop-color="#D4B896" stop-opacity="0.22"/>
           <stop offset="100%" stop-color="#D4B896" stop-opacity="0"/>
         </radialGradient>
       </defs>
       <rect width="1600" height="900" fill="url(#sand-grad)"/>
       <rect width="1600" height="900" fill="url(#light)"/>
 
-      <!-- 작은 모래 입자 텍스처 -->
-      <g opacity="0.5">
-        <circle cx="320" cy="620" r="1.5" fill="#D4B896"/>
-        <circle cx="480" cy="700" r="1" fill="#E5D4B1"/>
-        <circle cx="780" cy="640" r="1.2" fill="#D4B896"/>
-        <circle cx="1100" cy="680" r="1" fill="#E5D4B1"/>
-        <circle cx="1280" cy="720" r="1.5" fill="#D4B896"/>
-        <circle cx="900" cy="780" r="1" fill="#E5D4B1"/>
-      </g>
-
-      <!-- 집게 + 보말 캐릭터 (저채도 실루엣 - 트레일러 도착 전 임시. 우측에 배치하여 좌측 타이틀과 겹치지 않게) -->
-      <g transform="translate(1180, 360) scale(1.7)" opacity="0.78">
-        <!-- 보말(팽이고둥) - 정자세 -->
-        <g>
-          <path d="M -32,-30 Q -38,5 -28,30 Q -8,42 18,38 Q 32,20 32,-5 Q 26,-28 8,-36 Q -20,-38 -32,-30 Z"
-                fill="#6B4A2B" stroke="#4A2F18" stroke-width="1.5" opacity="0.85"/>
-          <!-- 나선 -->
-          <path d="M 0,-32 Q 16,-20 22,-3 Q 24,12 12,22 Q -4,26 -14,12" fill="none" stroke="#4A2F18" stroke-width="1" opacity="0.55"/>
-          <!-- 입구 -->
-          <ellipse cx="28" cy="0" rx="8" ry="22" fill="#E8DDC8" stroke="#4A2F18" stroke-width="1" opacity="0.85"/>
-          <!-- 산호조류 분홍 패치 -->
-          <ellipse cx="-12" cy="-12" rx="6" ry="4" fill="#B27C7E" opacity="0.4"/>
-        </g>
-        <!-- 집게발(우측이 크게) -->
-        <g opacity="0.85">
-          <path d="M 28,5 Q 42,2 50,-3 Q 54,-8 48,-10 Q 38,-7 32,-3 Z" fill="#C9A77B" stroke="#8B6B40" stroke-width="1"/>
-          <path d="M 28,12 Q 38,16 42,20 Q 42,24 38,22 Q 32,18 30,15 Z" fill="#C9A77B" stroke="#8B6B40" stroke-width="0.8"/>
-        </g>
-        <!-- 다리 -->
-        <g stroke="#C9A77B" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.85">
-          <path d="M 22,18 Q 16,28 12,36"/>
-          <path d="M 14,22 Q 6,32 -2,38"/>
-        </g>
-        <!-- 안테나 -->
-        <path d="M 30,-2 Q 38,-10 42,-16" fill="none" stroke="#8B6B40" stroke-width="0.9" stroke-linecap="round" opacity="0.7"/>
-        <path d="M 30,4 Q 40,2 46,-1" fill="none" stroke="#8B6B40" stroke-width="0.9" stroke-linecap="round" opacity="0.7"/>
+      <!-- 모래 입자 텍스처 (잔잔한 분위기만 형성) -->
+      <g opacity="0.45">
+        <circle cx="220" cy="640" r="1.2" fill="#D4B896"/>
+        <circle cx="380" cy="710" r="0.9" fill="#E5D4B1"/>
+        <circle cx="620" cy="660" r="1" fill="#D4B896"/>
+        <circle cx="880" cy="690" r="0.9" fill="#E5D4B1"/>
+        <circle cx="1120" cy="630" r="1.1" fill="#D4B896"/>
+        <circle cx="1280" cy="720" r="1.2" fill="#E5D4B1"/>
+        <circle cx="1380" cy="660" r="0.9" fill="#D4B896"/>
+        <circle cx="780" cy="760" r="0.8" fill="#E5D4B1"/>
       </g>
     </svg>
   </div>
@@ -1244,7 +1429,7 @@ section { padding: 112px 32px; }
       갯것이 영화제<span class="x">×</span>생태관광 주간
     </h1>
     <div class="hero-subtitle reveal" style="transition-delay: 0.2s;">
-      제주 남원에 나만의 계절이 되다
+      파도 속으로, 나만의 계절이 되다
     </div>
     <div class="hero-meta reveal" style="transition-delay: 0.3s;">
       <div class="hero-meta-item">
@@ -1253,7 +1438,7 @@ section { padding: 112px 32px; }
       </div>
       <div class="hero-meta-item">
         <span class="hero-meta-label">Venue</span>
-        <span class="hero-meta-value">제주 일대 · 연동 롯데시네마 외</span>
+        <span class="hero-meta-value">제주 전역 · 연동 롯데시네마 외</span>
       </div>
       <div class="hero-meta-item">
         <span class="hero-meta-label">Programs</span>
@@ -1306,109 +1491,55 @@ section { padding: 112px 32px; }
     <div class="intro-grid">
 
       <div class="intro-mascot reveal">
-        <!-- 마스코트: 긴발가락참집게 + 수두리 보말 (브리프 §2 기반 SVG) -->
-        <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg" aria-label="마스코트 — 긴발가락참집게가 수두리 보말 안에 든 모습">
-          <!-- 부드러운 배경 워시 -->
-          <ellipse cx="140" cy="240" rx="100" ry="14" fill="#1C5E7E" opacity="0.06"/>
-
-          <!-- 보말 껍데기 (팽이 모양, 첨단이 위쪽) -->
-          <g transform="translate(140,160)">
-            <path d="M -56,-50 Q -64,10 -48,52 Q -12,72 32,64 Q 56,32 56,-10 Q 44,-50 8,-62 Q -36,-66 -56,-50 Z"
-                  fill="#6B4A2B" stroke="#4A2F18" stroke-width="2"/>
-            <!-- 나선 -->
-            <path d="M -10,-58 Q 24,-40 38,-12 Q 42,18 22,38 Q -8,46 -28,28 Q -36,8 -22,-8" fill="none" stroke="#4A2F18" stroke-width="1.4" opacity="0.55"/>
-            <path d="M -8,-40 Q 14,-28 22,-8 Q 24,12 8,22 Q -10,24 -16,12" fill="none" stroke="#4A2F18" stroke-width="1.2" opacity="0.4"/>
-            <!-- 산호조류 분홍 패치 -->
-            <ellipse cx="-22" cy="-22" rx="10" ry="6" fill="#B27C7E" opacity="0.45"/>
-            <ellipse cx="-18" cy="-18" rx="4" ry="2.5" fill="#CEC7AE" opacity="0.6"/>
-            <!-- 마모 흰 자국 -->
-            <ellipse cx="18" cy="-20" rx="3" ry="2" fill="#CEC7AE" opacity="0.7"/>
-            <!-- 입구 (좌측) -->
-            <ellipse cx="-48" cy="6" rx="14" ry="32" fill="#E8DDC8" stroke="#4A2F18" stroke-width="1.5"/>
-            <ellipse cx="-48" cy="6" rx="11" ry="28" fill="#34301F" opacity="0.6"/>
-          </g>
-
-          <!-- 집게 (좌측 입구에서 나옴) -->
-          <g transform="translate(80,168)">
-            <!-- 다리 4쌍 (앞쪽이 가장 긺) -->
-            <g stroke="#C9A77B" stroke-width="3.5" fill="none" stroke-linecap="round">
-              <path d="M 8,-8 Q -10,-22 -28,-30 Q -38,-32 -42,-28"/>
-              <path d="M 8,-2 Q -8,-16 -24,-22 Q -34,-22 -38,-18"/>
-              <path d="M 8,4 Q -6,8 -22,10 Q -30,10 -32,12"/>
-              <path d="M 8,10 Q -4,18 -18,26 Q -26,30 -28,30"/>
-            </g>
-            <!-- 다리 마디 표시 (붉은-갈색 띠) -->
-            <g fill="#8B5A2B" opacity="0.7">
-              <ellipse cx="-12" cy="-22" rx="2" ry="1.5"/>
-              <ellipse cx="-8" cy="-14" rx="2" ry="1.5"/>
-              <ellipse cx="-12" cy="10" rx="2" ry="1.5"/>
-              <ellipse cx="-8" cy="22" rx="2" ry="1.5"/>
-            </g>
-
-            <!-- 좌측 집게발 (작은 쪽) -->
-            <g transform="translate(0,-2)">
-              <path d="M 4,-4 Q -8,-12 -18,-12 Q -24,-10 -22,-4 Q -16,-2 -8,-2 Q -2,-2 4,0 Z"
-                    fill="#C9A77B" stroke="#8B5A2B" stroke-width="1.2"/>
-            </g>
-
-            <!-- 우측 집게발 (큰 쪽 — 비대칭) -->
-            <g transform="translate(0,4)">
-              <path d="M 4,0 Q 6,14 -8,22 Q -28,26 -38,18 Q -42,10 -34,4 Q -24,2 -16,4 Q -8,4 4,4 Z"
-                    fill="#C9A77B" stroke="#8B5A2B" stroke-width="1.5"/>
-              <!-- 집게 분할선 -->
-              <path d="M -32,10 L -22,14" stroke="#8B5A2B" stroke-width="1"/>
-            </g>
-
-            <!-- 눈자루 + 검은 겹눈 -->
-            <line x1="2" y1="-8" x2="-2" y2="-22" stroke="#C9A77B" stroke-width="2.5"/>
-            <line x1="6" y1="-6" x2="10" y2="-22" stroke="#C9A77B" stroke-width="2.5"/>
-            <circle cx="-2" cy="-23" r="3.5" fill="#1A1A1A"/>
-            <circle cx="10" cy="-23" r="3.5" fill="#1A1A1A"/>
-            <circle cx="-1" cy="-24" r="1" fill="#fff"/>
-            <circle cx="11" cy="-24" r="1" fill="#fff"/>
-
-            <!-- 긴 안테나 2쌍 (긴 1쌍 + 짧은 내측 1쌍, 옅은 앰버 반투명) -->
-            <path d="M 4,-16 Q -6,-26 -14,-32 Q -20,-34 -22,-32" fill="none" stroke="#8B6B40" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-            <path d="M 8,-16 Q 14,-28 22,-34 Q 28,-36 30,-32" fill="none" stroke="#8B6B40" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
-            <path d="M 4,-12 Q -4,-18 -10,-22" fill="none" stroke="#8B6B40" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/>
-            <path d="M 8,-12 Q 14,-18 20,-22" fill="none" stroke="#8B6B40" stroke-width="0.8" stroke-linecap="round" opacity="0.55"/>
-          </g>
-        </svg>
+        <!-- 마스코트: 긴발가락참집게 + 수두리 보말 (라인아트) -->
+        <img src="./assets/logo_lineart.jpeg" alt="긴발가락참집게 + 수두리 보말 라인아트 마스코트" class="mascot-illust">
         <div class="mascot-caption">
-          마스코트 <strong>긴발가락참집게</strong> · 수두리 보말 안에 들다
+          <div class="mascot-name"><strong>긴발가락참집게</strong> · 수두리 보말 안에 들다</div>
+          <div class="mascot-story">"보말이냐 갱이냐 고민하다 두 종을 섞었더니, 집게가 되었다."</div>
         </div>
       </div>
 
       <div class="intro-text">
         <div class="section-eyebrow reveal">About</div>
         <h2 class="section-title reveal" style="transition-delay: 0.05s;">
-          제주 남원에서<br>
-          <span class="em">나만의 계절을 만나다</span>
+          파도 속으로,<br>
+          <span class="em">나만의 계절이 되다</span>
         </h2>
 
         <p class="lead reveal" style="transition-delay: 0.1s;">
-          <span class="accent">'갯것'</span>은 갯가에서 살아가는 모든 것 — 보말과 깅이, 해녀와 갯바위, 조수웅덩이의 작은 생명들을 가리키는 제주의 옛말입니다. 제3회 갯것이 영화제 × 생태관광 주간은 8일간 제주 곳곳을 무대로, 영화관과 갯벌을 잇는 한 호흡의 행사입니다.
+          <span class="accent">'갯것이'</span>는 바다에 사는 모든 것 — 깊은 바다의 큰 고래부터 갯바위의 작은 생물, 그리고 바다에 삶의 터를 둔 사람까지 모두 갯것이입니다. 갯것이영화제는 바다 환경 파괴에 눈감지 않으면서도, <span class="accent">아름답고 풍요로운 바다의 본질을 알리는 데</span> 초점을 두는 영화제입니다.
         </p>
 
         <h3 class="reveal">생태관광 주간이 먼저, 영화제는 그 안에서</h3>
         <p class="reveal">
-          올해 행사는 생태관광 주간을 중심에 두고, 영화제는 그 흐름 안의 한 장으로 들어옵니다. 깅이와 바당의 임형묵 감독이 안내하는 갯벌 생물 탐험, 87년 경력의 하도 해녀와 함께하는 물질, 다시바다의 패들보드 위에서 만나는 남방큰돌고래까지 — 6개의 생태 프로그램이 8일을 가로지릅니다.
+          제3회는 영화제와 바다체험 생태관광 프로그램을 동시에 진행해 시너지를 극대화하는 기획으로 진행됩니다. 깅이와 바당의 임형묵 감독이 안내하는 갯벌 생물 탐험, 현역 하도 해녀와 함께하는 물질, 다시바다의 패들보드 위에서 만나는 남방큰돌고래까지 — 6개의 생태 프로그램이 8일을 가로지릅니다.
         </p>
 
         <h3 class="reveal">영화는 그 바다의 다른 이야기</h3>
         <p class="reveal">
-          새만금에서 카메라를 내려놓지 않은 황윤 감독의 『수라』가 첫 파도를 일으키고, 30년 경력 김동식 수중촬영감독이 코랄 트라이앵글에서 만난 『이상한 놈들의 세상』이 마지막 물결을 만듭니다. 그 사이로 『꽁치풀의 속삭임』, 『물꽃의 전설』, 『조수웅덩이』, 『101』이 각자의 바다를 들려줍니다.
+          황윤 감독의 『수라』가 새만금에서 첫 파도를 일으키고, 30년 경력 김동식 수중촬영감독이 코랄 트라이앵글에서 만난 『이상한 놈들의 세상』이 마지막 물결을 만듭니다. 초대 4편은 모두 극장(DCP) 상영으로, 임형묵 감독의 『조수웅덩이: 바다의 시작』은 생태 체험 프로그램과 연동되어 소규모 상영으로 진행됩니다.
         </p>
 
         <blockquote class="intro-quote reveal">
-          "갯것이는 순 제주어로 바다에서 살아가는 생물들을 통칭하는 말입니다. 바다에서 살아가는 사람도 갯것에 포함됩니다."
-          <span class="src">— 임형묵 집행위원장 (생태관광지원센터장 · 『조수웅덩이』 감독)</span>
+          "꿈과 희망 그리고 낭만의 상징이던 바다는 언제부터인가 오염과 파괴, 기후변화에 의한 부정적 모습으로 인식되기 시작했습니다. 갯것이영화제는 바다 환경 파괴에 눈감지 않지만, 아름답고 풍요로운 바다의 본질을 알리는 데 포커스를 두는 영화제입니다."
+          <span class="src">— 제3회 갯것이영화제 소개문</span>
         </blockquote>
 
-        <h3 class="reveal">시니어와 가족이 함께</h3>
-        <p class="reveal">
-          본 행사는 만 65세 이상 시니어 관객과 가족 단위 방문객의 접근성을 우선으로 설계되었습니다. 큰 글자, 평이한 동선, 영화와 직접 이어지는 갯벌 체험 — 영화관에서 바다까지 한 호흡으로 이어집니다.
-        </p>
+        <h3 class="reveal">갯것이의 발자취</h3>
+        <ul class="history-list reveal">
+          <li>
+            <span class="hist-year">2024 · 제1회</span>
+            <span class="hist-text">성산읍 오조리가 연안습지보호지역으로 지정된 것을 기념해 오조리 갯벌에서 개최. 단편영화 6편 상영.</span>
+          </li>
+          <li>
+            <span class="hist-year">2025 · 제2회</span>
+            <span class="hist-text">제주생태관광지원센터의 지원으로 '갯것이영화제 + 생태관광' 프로그램 출범. 6개 상영관에서 장편 5편·단편 1편 상영. 개막작은 SBS 『고래와 나』 감독 버전.</span>
+          </li>
+          <li class="now">
+            <span class="hist-year">2026 · 제3회 <span class="hist-now-badge">NOW</span></span>
+            <span class="hist-text">갯것이영화제 × 생태관광 주간. 영화 6편 · 생태 프로그램 6개 · 8일.</span>
+          </li>
+        </ul>
       </div>
 
     </div>
@@ -1473,7 +1604,7 @@ section { padding: 112px 32px; }
         <div class="eco-card-kind">스쿠버다이빙 체험</div>
         <div class="eco-card-operator">운영 <strong>스킨스쿠버협회</strong> · 김건태 010-3691-8116</div>
         <dl class="eco-card-meta">
-          <dt>일정</dt><dd>8/10 — 8/13 (운영일별 상이)</dd>
+          <dt>일정</dt><dd>8/10 — 8/12 (운영일별 상이)</dd>
           <dt>장소</dt><dd>이호항</dd>
           <dt>참가비</dt><dd>100,000원</dd>
           <dt>정원</dt><dd>오전 10명 · 오후 10명</dd>
@@ -1494,14 +1625,14 @@ section { padding: 112px 32px; }
         </dl>
       </div>
 
-      <!-- 05. 돌고래와 함께 멍해 -->
+      <!-- 05. 돌고래와 바다여행 -->
       <div class="eco-card reveal" style="transition-delay: 0.2s;">
         <div class="eco-card-num">05 · 패들보드 체험</div>
-        <h3 class="eco-card-title">돌고래와 함께 멍해</h3>
-        <div class="eco-card-kind">패들보드 위에서 만나는 남방큰돌고래</div>
+        <h3 class="eco-card-title">돌고래와 바다여행</h3>
+        <div class="eco-card-kind">패들보드 바다 멍 — 남방큰돌고래</div>
         <div class="eco-card-operator">운영 <strong>다시바다</strong> · 안성관 010-4222-8075</div>
         <dl class="eco-card-meta">
-          <dt>일정</dt><dd>8/9 — 8/11 (운영일별 상이)</dd>
+          <dt>일정</dt><dd>8/11 — 8/14 (운영일별 상이)</dd>
           <dt>장소</dt><dd>삼양해수욕장</dd>
           <dt>참가비</dt><dd>20,000원</dd>
           <dt>정원</dt><dd>10명 / 일</dd>
@@ -1515,7 +1646,7 @@ section { padding: 112px 32px; }
         <div class="eco-card-kind">투명 카약으로 보는 바닥</div>
         <div class="eco-card-operator">운영 <strong>하도카약</strong> · 서성만 010-3697-4466</div>
         <dl class="eco-card-meta">
-          <dt>일정</dt><dd>8/10 — 8/13 (운영일별 상이)</dd>
+          <dt>일정</dt><dd>8/10 — 8/14 (운영일별 상이)</dd>
           <dt>장소</dt><dd>하도해수욕장</dd>
           <dt>참가비</dt><dd>10,000원</dd>
           <dt>정원</dt><dd>50명 / 회</dd>
@@ -1779,9 +1910,6 @@ section { padding: 112px 32px; }
           <span class="cal-event-title">물꽃의 전설</span>
           <span class="cal-event-place">연동 롯데시네마 · 고희영</span>
         </div>
-        <div class="cal-eco-summary">
-          <strong>생태</strong> 돌고래와 함께 멍해 · 삼양
-        </div>
       </div>
 
       <!-- 8/10 월 -->
@@ -1791,11 +1919,10 @@ section { padding: 112px 32px; }
           <span class="cal-date-day">MON</span>
         </div>
         <div class="cal-eco-summary" style="margin-top:0;">
-          <strong>생태 · 5종 동시 운영</strong><br>
+          <strong>생태 · 4종 동시 운영</strong><br>
           바다야 안녕 · 보목<br>
           바당에 퐁당 · 이호<br>
           하도리 해녀체험 · 하도<br>
-          돌고래와 함께 멍해 · 삼양<br>
           하도 투명한 바다 · 하도
         </div>
       </div>
@@ -1813,7 +1940,7 @@ section { padding: 112px 32px; }
         </div>
         <div class="cal-eco-summary">
           <strong>생태</strong> 제주바당 생물탐험 · 수마포<br>
-          바다야 안녕 · 보목 / 바당에 퐁당 · 이호 / 해녀체험·카약 · 하도 / 돌고래 · 삼양
+          바다야 안녕 · 보목 / 바당에 퐁당 · 이호 / 해녀체험·카약 · 하도 / 돌고래와 바다여행 · 삼양
         </div>
       </div>
 
@@ -1830,7 +1957,7 @@ section { padding: 112px 32px; }
         </div>
         <div class="cal-eco-summary">
           <strong>생태</strong> 제주바당 생물탐험 · 하예<br>
-          바다야 안녕 · 보목 / 바당에 퐁당 · 이호 / 해녀체험·카약 · 하도
+          바다야 안녕 · 보목 / 바당에 퐁당 · 이호 / 해녀체험·카약 · 하도 / 돌고래와 바다여행 · 삼양
         </div>
       </div>
 
@@ -1843,8 +1970,8 @@ section { padding: 112px 32px; }
         <div class="cal-eco-summary" style="margin-top:0;">
           <strong>생태 · 4종 운영</strong><br>
           바다야 안녕 · 보목<br>
-          바당에 퐁당 · 이호<br>
           하도리 해녀체험 · 하도<br>
+          돌고래와 바다여행 · 삼양<br>
           하도 투명한 바다 · 하도
         </div>
       </div>
@@ -1865,6 +1992,10 @@ section { padding: 112px 32px; }
           <span class="cal-event-title">보목 프리다이빙</span>
           <span class="cal-event-place">김경훈 · 101미터 도전기</span>
         </div>
+        <div class="cal-eco-summary">
+          <strong>생태 · 3종 운영</strong><br>
+          바다야 안녕 · 보목 / 돌고래와 바다여행 · 삼양 / 하도 투명한 바다 · 하도
+        </div>
       </div>
 
       <!-- 8/15 토 — 폐막 -->
@@ -1880,7 +2011,7 @@ section { padding: 112px 32px; }
           <span class="cal-event-place">15:30 폐막 인사<br>연동 롯데시네마 · 임완호·김동식</span>
         </div>
         <div class="cal-eco-summary">
-          <strong>생태</strong> 보목 운영
+          <strong>생태</strong> 바다야 안녕 · 보목 (마지막일)
         </div>
       </div>
 
@@ -1906,42 +2037,55 @@ section { padding: 112px 32px; }
       <span class="em">서쪽 끝까지</span>
     </h2>
     <p class="section-lead reveal" style="transition-delay: 0.1s;">
-      메인 상영관은 연동 롯데시네마. 생태 프로그램은 성산·보목·이호·하도·삼양·예래(하예)에서 운영됩니다.
+      메인 상영관은 연동 롯데시네마. 생태 프로그램은 성산·보목·이호·하도·삼양·예래(하예)에서 운영됩니다. 권역별로 흩어져 있으니 일정·동선을 미리 확인해 주세요.
     </p>
 
-    <div class="location-grid">
-      <div class="location-map reveal">
-        <!-- Kakao Maps 임베드 자리 (좌표 확정 후 실제 임베드 교체) -->
-        <div class="location-map-placeholder">
-          <div class="label">Kakao Map</div>
-          <div class="text">
-            카카오 맵 임베드<br>
-            <small style="opacity:0.65; font-size:12px;">상영관·프로그램 운영지 마커 일괄 표시</small>
-          </div>
+    <div class="map-wrap reveal">
+      <div id="jeju-map" class="jeju-map" role="img" aria-label="제주 권역 지도 — 영화 상영관과 생태 프로그램 운영지"></div>
+
+      <!-- 지도 범례 -->
+      <div class="map-legend">
+        <div class="legend-item">
+          <span class="legend-dot film"></span>
+          <span>영화 상영</span>
         </div>
+        <div class="legend-item">
+          <span class="legend-dot eco"></span>
+          <span>생태 프로그램</span>
+        </div>
+        <div class="legend-note">※ 마커 클릭 시 상세 정보가 표시됩니다. 카페 핀스 위치는 좌표 출처에 따라 다를 수 있어 확인이 필요합니다.</div>
+      </div>
+    </div>
+
+    <!-- 권역 정보 그리드 -->
+    <div class="location-grid-info">
+      <div class="loc-info-block reveal">
+        <div class="loc-info-eyebrow film-lbl">영화 상영</div>
+        <ul class="loc-list">
+          <li>
+            <strong>연동 롯데시네마</strong>
+            <span>개막·정규 상영 3일 (8/8, 8/9, 8/15)</span>
+          </li>
+          <li>
+            <strong>해양동물박물관 · 예래 생태체험관</strong>
+            <span>8/11, 8/12 『조수웅덩이』 상영 · 임형묵 감독 해설</span>
+          </li>
+          <li>
+            <strong>카페 핀스</strong>
+            <span>8/14 『101』 상영 · 보목 프리다이빙 세미나 동반 (김경훈 강사)</span>
+          </li>
+        </ul>
       </div>
 
-      <div class="location-info">
-        <h3 class="reveal">제주특별자치도 일대 · 6개 권역</h3>
-        <p class="reveal">영화 상영관과 생태 프로그램 운영지가 다소 떨어져 있습니다. 권역별 일정·차량 동선을 미리 확인해 주세요.</p>
-
-        <ul class="location-list">
-          <li class="reveal">
-            <span class="lbl">주 상영관</span>
-            <span class="val">연동 롯데시네마<br><small>개막식·정규 상영 3일 (8/8, 8/9, 8/15)</small></span>
-          </li>
-          <li class="reveal">
-            <span class="lbl">권역 상영</span>
-            <span class="val">해양동물박물관 · 예래 생태체험관 · 카페 핀스<br><small>다큐 상영 + 해설·강연·관객과의 대화</small></span>
-          </li>
-          <li class="reveal">
-            <span class="lbl">생태 권역</span>
-            <span class="val">성산 (수마포) · 보목 · 이호 · 하도 · 삼양 · 예래 (하예)</span>
-          </li>
-          <li class="reveal">
-            <span class="lbl">관련 시설</span>
-            <span class="val">카페 핀스 · 8/14 프리다이빙 세미나 동반<br><small>김경훈 강사 · 보목 프리다이빙 101미터 도전기</small></span>
-          </li>
+      <div class="loc-info-block reveal" style="transition-delay: 0.1s;">
+        <div class="loc-info-eyebrow eco-lbl">생태 프로그램 권역</div>
+        <ul class="loc-list">
+          <li><strong>성산 (수마포)</strong> <span>제주바당 생물탐험 · 8/11</span></li>
+          <li><strong>보목</strong> <span>바다야 안녕 · 스쿠버다이빙</span></li>
+          <li><strong>이호</strong> <span>바당에 퐁당 · 스쿠버다이빙</span></li>
+          <li><strong>하도</strong> <span>해녀체험 · 투명 카약</span></li>
+          <li><strong>삼양</strong> <span>돌고래와 바다여행 · 패들보드</span></li>
+          <li><strong>예래 (하예)</strong> <span>제주바당 생물탐험 · 8/12</span></li>
         </ul>
       </div>
     </div>
@@ -1957,7 +2101,7 @@ section { padding: 112px 32px; }
       <div class="footer-name">갯것이 영화제<span>×</span>생태관광 주간</div>
       <div class="footer-edition">The 3rd Edition · 2026</div>
       <p class="footer-desc">
-        2026년 8월 8일 — 8월 15일, 제주 일대. 생태 프로그램 6개 · 영화 6편 · 8일.
+        2026년 8월 8일 — 8월 15일, 제주 전역. 생태 프로그램 6개 · 영화 6편 · 8일.
       </p>
     </div>
 
@@ -1978,7 +2122,7 @@ section { padding: 112px 32px; }
         <li>제3회 갯것이 영화제 사무국</li>
         <li>집행위원장 임형묵</li>
         <li>모더레이터 전성실</li>
-        <li>티켓 발권 (확정 후 게재)</li>
+        <li><a href="tel:0647823253">관람·체험 문의 064-782-3253</a></li>
       </ul>
     </div>
 
@@ -1986,17 +2130,15 @@ section { padding: 112px 32px; }
       <h5>주최 · 주관</h5>
       <div class="footer-orgs">
         <div class="footer-org">
-          <div class="footer-org-mark">CTR</div>
-          <div class="footer-org-text">
-            <span class="role">주최</span>
-            <span class="name">제주특별자치도 생태관광지원센터</span>
+          <span class="role">주최</span>
+          <div class="footer-org-logo-wrap">
+            <img src="./assets/logo_jejucenter.png" alt="제주특별자치도 생태관광지원센터">
           </div>
         </div>
         <div class="footer-org">
-          <div class="footer-org-mark">ECO</div>
-          <div class="footer-org-text">
-            <span class="role">주관</span>
-            <span class="name">(사)제주생태관광협회</span>
+          <span class="role">주관</span>
+          <div class="footer-org-logo-wrap">
+            <img src="./assets/logo_jejuecotour.png" alt="(사)제주생태관광협회 JEJU ECOTOUR ASSOCIATION">
           </div>
         </div>
       </div>
@@ -2037,6 +2179,144 @@ document.querySelectorAll('.fork-card').forEach(card => {
     }
   });
 });
+</script>
+
+<!-- Leaflet 인터랙티브 지도 -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+/**
+ * 제주 권역 지도 — Leaflet.js + CARTO Positron 타일
+ * 좌표 출처: Google Places API (places_search) · 2026-06-30
+ * 좌표계: EPSG:4326 (WGS84)
+ */
+(function initJejuMap() {
+  if (typeof L === 'undefined') return;
+  const mapEl = document.getElementById('jeju-map');
+  if (!mapEl) return;
+
+  // 권역 데이터 (좌표는 places_search 결과)
+  const VENUES = [
+    {
+      name: '연동 롯데시네마', category: 'film', primary: true,
+      lat: 33.480788, lng: 126.494737,
+      address: '제주시 과원로 128 B1F',
+      desc: '메인 상영관 · 개막·정규 상영 3일 (8/8, 8/9, 8/15)',
+      src: 'places_search:ChIJcdt6uQ77DDUR7X659VpjhtY'
+    },
+    {
+      name: '제주 해양동물박물관', category: 'film',
+      lat: 33.429203, lng: 126.855457,
+      address: '서귀포시 성산읍 서성일로 689-21',
+      desc: '『조수웅덩이: 바다의 시작』 상영 · 8/11 · 임형묵 감독 해설',
+      src: 'places_search:ChIJxXolYpsRDTURY8TUHUZR_wE'
+    },
+    {
+      name: '예래 생태체험관', category: 'film',
+      lat: 33.244470, lng: 126.390978,
+      address: '서귀포시 예래동 24-1',
+      desc: '『조수웅덩이: 바다의 시작』 상영 · 8/12 · 임형묵 감독 해설',
+      src: 'places_search:ChIJSX763CpbDDURe9VLuRpWHvg'
+    },
+    {
+      name: '카페 핀스(FINS)', category: 'film',
+      lat: 33.263608, lng: 126.182368,
+      address: '서귀포시 대정읍 무릉리 4065-1',
+      desc: '『101』 상영 · 8/14 · 보목 프리다이빙 세미나 동반 (김경훈 강사)',
+      note: '⚠ 좌표 확인 필요: 회의 시 "보목"으로 언급된 위치와 차이 있음',
+      src: 'places_search:ChIJTyfbJuFpDDUR5vs-KPzvXF4'
+    },
+    {
+      name: '보목항', category: 'eco',
+      lat: 33.239532, lng: 126.608169,
+      address: '서귀포시 보목동',
+      desc: '바다야 안녕 · 스쿠버다이빙 (물고기반 운영)',
+      src: 'places_search:ChIJiYixZlJTDDURDVdf8tdq1ek'
+    },
+    {
+      name: '이호테우해변', category: 'eco',
+      lat: 33.497936, lng: 126.453159,
+      address: '제주시 이호동 1665-13',
+      desc: '바당에 퐁당 · 스쿠버다이빙 (스킨스쿠버연합회)',
+      src: 'places_search:ChIJF2wgtzz7DDURDzj9E87gjLI'
+    },
+    {
+      name: '하도해수욕장', category: 'eco',
+      lat: 33.512909, lng: 126.898817,
+      address: '제주시 구좌읍 하도리 52-3',
+      desc: '하도리 해녀체험 · 투명 카약',
+      src: 'places_search:ChIJvQsd3lgVDTURA5UY8TrWfq0'
+    },
+    {
+      name: '삼양해수욕장', category: 'eco',
+      lat: 33.526028, lng: 126.586914,
+      address: '제주시 삼양일동 선사로 8길',
+      desc: '돌고래와 바다여행 · 패들보드 바다 멍 (다시바다)',
+      src: 'places_search:ChIJWVLk54bjDDURAgo7ldkktR4'
+    },
+    {
+      name: '성산 수마포 해안', category: 'eco',
+      lat: 33.460792, lng: 126.934821,
+      address: '서귀포시 성산읍 성산리',
+      desc: '제주바당 생물탐험 · 8/11 · 깅이와 바당 임형묵 감독',
+      src: 'places_search:ChIJaRGygFwVDTUR9Jib6H3r4PI'
+    }
+  ];
+
+  // 무결성 검증: 좌표가 제주 범위인지 (작업지침 §12)
+  const inJeju = v => v.lat >= 33.10 && v.lat <= 33.60 && v.lng >= 126.10 && v.lng <= 127.00;
+  const invalidCoords = VENUES.filter(v => !inJeju(v));
+  if (invalidCoords.length) console.warn('좌표 범위 이탈:', invalidCoords);
+
+  // 지도 초기화
+  const map = L.map('jeju-map', {
+    center: [33.385, 126.55],   // 한라산 중심부
+    zoom: 10,
+    minZoom: 9,
+    maxZoom: 16,
+    scrollWheelZoom: false,     // 페이지 스크롤 방해 방지
+    zoomControl: true,
+    attributionControl: true
+  });
+
+  // 스크롤 휠 클릭 시 활성화 (UX: 우발 줌 방지)
+  map.on('click', () => map.scrollWheelZoom.enable());
+  map.on('mouseout', () => map.scrollWheelZoom.disable());
+
+  // CARTO Positron 라이트 타일 (라이트 테마, 미니멀)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
+
+  // 마커 렌더링
+  VENUES.forEach(v => {
+    const cls = 'venue-marker ' + v.category + (v.primary ? ' primary' : '');
+    const size = v.primary ? 22 : 16;
+    const icon = L.divIcon({
+      className: cls,
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2],
+      html: ''
+    });
+    const catLabel = v.category === 'film' ? '영화 상영' : '생태 프로그램';
+    const noteHtml = v.note ? `<div class="popup-venue-addr" style="color:var(--shell);">${v.note}</div>` : '';
+    const popupHtml = `
+      <span class="popup-venue-cat ${v.category}">${catLabel}${v.primary ? ' · 메인' : ''}</span>
+      <strong class="popup-venue-name">${v.name}</strong>
+      <div class="popup-venue-desc">${v.desc}</div>
+      <div class="popup-venue-addr">${v.address}</div>
+      ${noteHtml}
+    `;
+    L.marker([v.lat, v.lng], { icon })
+      .addTo(map)
+      .bindPopup(popupHtml, { maxWidth: 300, autoPanPadding: [40, 60] });
+  });
+
+  // 모든 마커가 보이도록 자동 fit
+  const bounds = L.latLngBounds(VENUES.map(v => [v.lat, v.lng]));
+  map.fitBounds(bounds, { padding: [50, 50], maxZoom: 11 });
+})();
 </script>
 
 </body>
