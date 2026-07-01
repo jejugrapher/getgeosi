@@ -1356,17 +1356,180 @@ section { padding: 112px 32px; }
   isolation: isolate;
   z-index: 1;
 }
+
+/* 지도 + 사이드바 2컬럼 */
+.map-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 18px;
+  align-items: stretch;
+}
+@media (max-width: 900px) {
+  .map-layout { grid-template-columns: 1fr; }
+}
+.map-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 .jeju-map {
   width: 100%;
-  height: 520px;
+  height: 560px;
   border-radius: 3px;
   background: #fff;
   z-index: 1;
   position: relative;
 }
+@media (max-width: 900px) {
+  .jeju-map { height: 440px; }
+}
 @media (max-width: 700px) {
-  .jeju-map { height: 420px; }
+  .jeju-map { height: 380px; }
   .map-wrap { padding: 12px 12px 14px; }
+}
+
+/* 사이드바 */
+.map-selector {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid var(--line-soft);
+  min-height: 560px;
+  max-height: 560px;
+}
+@media (max-width: 900px) {
+  .map-selector { min-height: 420px; max-height: 480px; }
+}
+
+.map-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.map-tab {
+  background: transparent;
+  border: none;
+  padding: 16px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-faint);
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: color 0.2s, background 0.2s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.map-tab:hover { color: var(--ink); background: rgba(28, 94, 126, 0.04); }
+.map-tab.is-active {
+  color: var(--teal-deep);
+  background: var(--bg-card);
+  border-bottom-color: var(--teal);
+}
+.map-tab-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.map-tab-dot.eco { background: var(--teal); }
+.map-tab-dot.film { background: var(--sand-deep); }
+
+.map-list-title {
+  padding: 14px 18px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  background: var(--bg-card);
+  flex-shrink: 0;
+}
+
+.map-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 8px;
+  overflow-y: auto;
+  flex: 1;
+  background: var(--bg-card);
+}
+.map-list[hidden] { display: none; }
+.map-list li { margin: 0; padding: 0; }
+
+.map-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 12px 18px;
+  background: transparent;
+  border: none;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: background 0.15s, border-left-color 0.15s;
+}
+.map-item:hover {
+  background: rgba(28, 94, 126, 0.05);
+}
+.map-item.is-active {
+  background: rgba(28, 94, 126, 0.09);
+  border-left-color: var(--teal);
+}
+.map-list[data-cat="film"] .map-item.is-active {
+  background: rgba(212, 184, 150, 0.14);
+  border-left-color: var(--sand-deep);
+}
+
+.map-item-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 26px;
+  background: var(--teal);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.map-item-num.film { background: var(--sand-deep); }
+.map-item-num.opening { background: #5B7A9C; color: #fff; letter-spacing: 0.02em; }
+.map-item-num.closing { background: var(--teal-deep); color: #fff; letter-spacing: 0.02em; }
+
+.map-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.map-item-body strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+.map-item-body em {
+  font-style: normal;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 /* Leaflet 커스텀 마커 (divIcon) */
@@ -2490,23 +2653,146 @@ section { padding: 112px 32px; }
       <span class="em">서쪽 끝까지</span>
     </h2>
     <p class="section-lead reveal" style="transition-delay: 0.1s;">
-      메인 상영관은 연동 롯데시네마. 생태 프로그램은 성산·보목·이호·하도·삼양·예래(하예)에서 운영됩니다. 권역별로 흩어져 있으니 일정·동선을 미리 확인해 주세요.
+      메인 상영관은 연동 롯데시네마. 생태 프로그램은 성산·보목·이호·하도·삼양·예래(하예)에서 운영됩니다. 우측 리스트에서 프로그램을 선택하면 지도에서 위치를 확인할 수 있습니다.
     </p>
 
     <div class="map-wrap reveal">
-      <div id="jeju-map" class="jeju-map" role="img" aria-label="제주 권역 지도 — 영화 상영관과 생태 프로그램 운영지"></div>
+      <div class="map-layout">
 
-      <!-- 지도 범례 -->
-      <div class="map-legend">
-        <div class="legend-item">
-          <span class="legend-dot film"></span>
-          <span>영화 상영</span>
+        <div class="map-container">
+          <div id="jeju-map" class="jeju-map" role="img" aria-label="제주 권역 지도 — 영화 상영관과 생태 프로그램 운영지"></div>
+          <!-- 지도 범례 -->
+          <div class="map-legend">
+            <div class="legend-item">
+              <span class="legend-dot film"></span>
+              <span>영화 상영</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot eco"></span>
+              <span>생태 프로그램</span>
+            </div>
+          </div>
         </div>
-        <div class="legend-item">
-          <span class="legend-dot eco"></span>
-          <span>생태 프로그램</span>
-        </div>
-        <div class="legend-note">※ 마커 클릭 시 상세 정보가 표시됩니다. 카페 핀스 위치는 좌표 출처에 따라 다를 수 있어 확인이 필요합니다.</div>
+
+        <aside class="map-selector">
+          <div class="map-tabs" role="tablist" aria-label="프로그램 카테고리">
+            <button class="map-tab is-active" type="button" data-cat="eco" role="tab" aria-selected="true">
+              <span class="map-tab-dot eco"></span>생태관광
+            </button>
+            <button class="map-tab" type="button" data-cat="film" role="tab" aria-selected="false">
+              <span class="map-tab-dot film"></span>영화제
+            </button>
+          </div>
+
+          <div class="map-list-title">프로그램을 선택하세요</div>
+
+          <!-- 생태관광 리스트 -->
+          <ul class="map-list" data-cat="eco">
+            <li><button class="map-item" type="button" data-venue="성산 수마포 해안">
+              <span class="map-item-num">01</span>
+              <span class="map-item-body">
+                <strong>제주바당 생물탐험</strong>
+                <em>8/11 · 성산 수마포</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="예래 생태체험관">
+              <span class="map-item-num">01</span>
+              <span class="map-item-body">
+                <strong>제주바당 생물탐험</strong>
+                <em>8/12 · 예래(하예)</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="보목항">
+              <span class="map-item-num">02</span>
+              <span class="map-item-body">
+                <strong>바다야 안녕</strong>
+                <em>스쿠버다이빙 · 보목</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="이호테우해변">
+              <span class="map-item-num">03</span>
+              <span class="map-item-body">
+                <strong>바당에 퐁당</strong>
+                <em>스쿠버다이빙 · 이호</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="하도해수욕장">
+              <span class="map-item-num">04</span>
+              <span class="map-item-body">
+                <strong>하도리 해녀체험</strong>
+                <em>해녀 체험 · 하도</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="삼양해수욕장">
+              <span class="map-item-num">05</span>
+              <span class="map-item-body">
+                <strong>돌고래와 바다여행</strong>
+                <em>패들보드 · 삼양</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="하도해수욕장">
+              <span class="map-item-num">06</span>
+              <span class="map-item-body">
+                <strong>하도 투명한 바다</strong>
+                <em>투명 카약 · 하도</em>
+              </span>
+            </button></li>
+          </ul>
+
+          <!-- 영화제 리스트 -->
+          <ul class="map-list" data-cat="film" hidden>
+            <li><button class="map-item" type="button" data-venue="연동 롯데시네마">
+              <span class="map-item-num opening">개막</span>
+              <span class="map-item-body">
+                <strong>수라</strong>
+                <em>8/8 토 · 연동 롯데시네마</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="연동 롯데시네마">
+              <span class="map-item-num film">02</span>
+              <span class="map-item-body">
+                <strong>꽁치풀의 속삭임</strong>
+                <em>8/9 일 · 연동 롯데시네마</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="연동 롯데시네마">
+              <span class="map-item-num film">03</span>
+              <span class="map-item-body">
+                <strong>물꽃의 전설</strong>
+                <em>8/9 일 · 연동 롯데시네마</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="제주 해양동물박물관">
+              <span class="map-item-num film">04</span>
+              <span class="map-item-body">
+                <strong>조수웅덩이: 바다의 시작</strong>
+                <em>8/11 화 · 해양동물박물관</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="예래 생태체험관">
+              <span class="map-item-num film">04</span>
+              <span class="map-item-body">
+                <strong>조수웅덩이: 바다의 시작</strong>
+                <em>8/12 수 · 예래 생태체험관</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="카페 핀스(FINS)">
+              <span class="map-item-num film">05</span>
+              <span class="map-item-body">
+                <strong>101</strong>
+                <em>8/14 금 · 카페 핀스</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="연동 롯데시네마">
+              <span class="map-item-num closing">폐막</span>
+              <span class="map-item-body">
+                <strong>이상한 놈들의 세상</strong>
+                <em>8/15 토 · 연동 롯데시네마</em>
+              </span>
+            </button></li>
+          </ul>
+        </aside>
+
       </div>
     </div>
 
@@ -2962,6 +3248,9 @@ document.addEventListener('keydown', (e) => {
     maxZoom: 19
   }).addTo(map);
 
+  // 마커 저장 (name 키 → marker 인스턴스)
+  const markersByName = {};
+
   // 마커 렌더링
   VENUES.forEach(v => {
     const cls = 'venue-marker ' + v.category + (v.primary ? ' primary' : '');
@@ -2981,14 +3270,52 @@ document.addEventListener('keydown', (e) => {
       <div class="popup-venue-addr">${v.address}</div>
       ${noteHtml}
     `;
-    L.marker([v.lat, v.lng], { icon })
+    const marker = L.marker([v.lat, v.lng], { icon })
       .addTo(map)
       .bindPopup(popupHtml, { maxWidth: 300, autoPanPadding: [40, 60] });
+    markersByName[v.name] = { marker, lat: v.lat, lng: v.lng };
   });
 
   // 모든 마커가 보이도록 자동 fit
   const bounds = L.latLngBounds(VENUES.map(v => [v.lat, v.lng]));
   map.fitBounds(bounds, { padding: [50, 50], maxZoom: 11 });
+
+  // ============================================================
+  // 사이드바 탭 + 프로그램 리스트 인터랙션
+  // ============================================================
+  const tabs = document.querySelectorAll('.map-tab');
+  const lists = document.querySelectorAll('.map-list');
+  const items = document.querySelectorAll('.map-item');
+
+  // 탭 전환
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const cat = tab.dataset.cat;
+      tabs.forEach(t => {
+        const active = t === tab;
+        t.classList.toggle('is-active', active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      lists.forEach(list => {
+        list.hidden = list.dataset.cat !== cat;
+      });
+      // 활성화 상태 초기화
+      items.forEach(i => i.classList.remove('is-active'));
+    });
+  });
+
+  // 프로그램 리스트 아이템 클릭 → 지도 이동 + 마커 팝업
+  items.forEach(item => {
+    item.addEventListener('click', () => {
+      const venueName = item.dataset.venue;
+      const target = markersByName[venueName];
+      if (!target) return;
+      items.forEach(i => i.classList.remove('is-active'));
+      item.classList.add('is-active');
+      map.setView([target.lat, target.lng], 14, { animate: true });
+      target.marker.openPopup();
+    });
+  });
 })();
 </script>
 
