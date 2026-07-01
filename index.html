@@ -135,44 +135,26 @@ a { color: inherit; }
 .hero-video {
   width: 100%; height: 100%;
   object-fit: cover;
+  object-position: center;
+  background: #142028;
 }
 .hero-placeholder {
   background: 
     radial-gradient(ellipse at 30% 40%, rgba(212,184,150,0.18) 0%, transparent 50%),
     radial-gradient(ellipse at 70% 60%, rgba(28,94,126,0.35) 0%, transparent 60%),
     linear-gradient(180deg, #1a3340 0%, #0e1c24 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.hero-placeholder-svg {
-  width: 100%; height: 100%;
-  position: absolute;
-  inset: 0;
-  opacity: 0.42;
 }
 .hero-img-overlay {
-  position: absolute; inset:0; z-index: 1;
+  position: absolute; inset:0; z-index: 2;
   background: linear-gradient(180deg, 
     rgba(20,40,60,0.10) 0%, 
     rgba(20,40,60,0.30) 50%, 
     rgba(14,28,36,0.88) 100%);
-}
-.hero-trailer-note {
-  position: absolute;
-  top: 28px; right: 32px;
-  z-index: 3;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(244,239,231,0.55);
-  padding: 6px 12px;
-  border: 1px solid rgba(244,239,231,0.25);
-  border-radius: 2px;
+  pointer-events: none;
 }
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
@@ -233,7 +215,6 @@ a { color: inherit; }
   .hero { min-height: 78vh; }
   .hero-content { padding: 60px 20px 56px; }
   .hero-meta { gap: 20px 36px; padding-top: 24px; }
-  .hero-trailer-note { top: 16px; right: 20px; font-size: 10px; }
 }
 
 /* ============================================================
@@ -1389,39 +1370,12 @@ section { padding: 112px 32px; }
 <!-- ============================== HERO ============================== -->
 <header class="hero">
   <div class="hero-placeholder">
-    <!-- 트레일러 영상 자리 (제작 인수인계 문서 기준, 별도 진행 중) -->
-    <!-- 실제 배포 시: <video class="hero-video" src="./assets/trailer_30s.mp4" autoplay muted loop playsinline poster="./assets/trailer_poster.jpg"></video> -->
-    <svg class="hero-placeholder-svg" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <!-- 모래 + 바다 그라데이션 -->
-      <defs>
-        <linearGradient id="sand-grad" x1="0" y1="0.4" x2="0" y2="1">
-          <stop offset="0%" stop-color="#2A4456" stop-opacity="0.35"/>
-          <stop offset="60%" stop-color="#7A6342" stop-opacity="0.45"/>
-          <stop offset="100%" stop-color="#5B4A2E" stop-opacity="0.6"/>
-        </linearGradient>
-        <radialGradient id="light" cx="0.5" cy="0.35" r="0.65">
-          <stop offset="0%" stop-color="#D4B896" stop-opacity="0.22"/>
-          <stop offset="100%" stop-color="#D4B896" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <rect width="1600" height="900" fill="url(#sand-grad)"/>
-      <rect width="1600" height="900" fill="url(#light)"/>
-
-      <!-- 모래 입자 텍스처 (잔잔한 분위기만 형성) -->
-      <g opacity="0.45">
-        <circle cx="220" cy="640" r="1.2" fill="#D4B896"/>
-        <circle cx="380" cy="710" r="0.9" fill="#E5D4B1"/>
-        <circle cx="620" cy="660" r="1" fill="#D4B896"/>
-        <circle cx="880" cy="690" r="0.9" fill="#E5D4B1"/>
-        <circle cx="1120" cy="630" r="1.1" fill="#D4B896"/>
-        <circle cx="1280" cy="720" r="1.2" fill="#E5D4B1"/>
-        <circle cx="1380" cy="660" r="0.9" fill="#D4B896"/>
-        <circle cx="780" cy="760" r="0.8" fill="#E5D4B1"/>
-      </g>
-    </svg>
+    <!-- 트레일러 영상 (autoplay + muted + loop + playsinline) -->
+    <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+      <source src="./assets/hero_intro.mp4" type="video/mp4">
+    </video>
   </div>
   <div class="hero-img-overlay"></div>
-  <div class="hero-trailer-note">30s Trailer · 영상 합성 중</div>
 
   <div class="hero-content">
     <div class="hero-eyebrow reveal">The 3rd Edition · 2026</div>
