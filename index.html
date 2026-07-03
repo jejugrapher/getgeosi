@@ -290,7 +290,7 @@ a { color: inherit; }
   position: absolute;
   bottom: -42px; right: -30px;
   width: 180px; height: 180px;
-  background: url('./assets/logo_mascot.png') no-repeat center / contain;
+  background: url('./assets/logo_lineart.png') no-repeat center / contain;
   opacity: 0.09;
   pointer-events: none;
   transition: transform 0.7s cubic-bezier(0.2,0.8,0.3,1), opacity 0.7s;
@@ -1753,12 +1753,13 @@ section { padding: 112px 32px; }
 }
 
 /* ============================================================
-   FOOTER
+   FOOTER — 밝은 샌드톤 배경 (임형묵 센터장 지시 · 2026.07.02)
    ============================================================ */
 .footer {
-  background: var(--teal-deep);
-  color: rgba(255,255,255,0.82);
+  background: var(--bg-deep);
+  color: var(--ink-soft);
   padding: 80px 32px 36px;
+  border-top: 1px solid var(--line);
 }
 .footer-inner {
   max-width: 1280px;
@@ -1777,39 +1778,47 @@ section { padding: 112px 32px; }
 .footer-brand .footer-name {
   font-size: 22px;
   font-weight: 800;
-  color: white;
+  color: var(--teal-deep);
   letter-spacing: -0.015em;
   margin-bottom: 4px;
   line-height: 1.25;
 }
-.footer-brand .footer-name span { color: var(--sand); font-weight: 400; margin: 0 4px; }
+.footer-mascot {
+  display: block;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+.footer-brand .footer-name span { color: var(--sand-deep); font-weight: 400; margin: 0 4px; }
 .footer-brand .footer-edition {
   font-size: 13px;
   letter-spacing: 0.08em;
-  color: var(--sand-light);
+  color: var(--shell);
   margin-bottom: 18px;
+  font-weight: 600;
 }
 .footer-brand .footer-desc {
   font-size: 14px;
   line-height: 1.7;
-  color: rgba(255,255,255,0.7);
+  color: var(--ink-soft);
   max-width: 340px;
 }
 .footer h5 {
   font-size: 12px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
+  color: var(--ink-faint);
   margin-bottom: 18px;
   font-weight: 700;
 }
 .footer ul { list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
 .footer ul a {
-  color: rgba(255,255,255,0.72);
+  color: var(--ink-soft);
   text-decoration: none;
   transition: color 0.2s;
 }
-.footer ul a:hover { color: white; }
+.footer ul a:hover { color: var(--teal-deep); }
 .footer-orgs {
   display: flex;
   flex-direction: column;
@@ -1824,31 +1833,33 @@ section { padding: 112px 32px; }
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
+  color: var(--ink-faint);
   font-weight: 700;
   display: block;
 }
+/* 흰 박스 제거 — 밝은 footer 배경 위에 로고 직접 표시 */
 .footer-org-logo-wrap {
-  background: white;
-  border-radius: 4px;
-  padding: 16px 22px;
+  background: transparent;
+  border-radius: 0;
+  padding: 4px 0;
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 80px;
+  justify-content: flex-start;
+  height: 64px;
   width: 100%;
   box-sizing: border-box;
 }
 .footer-org-logo-wrap img {
   display: block;
-  width: 100%;
-  max-height: 48px;
+  width: auto;
+  max-height: 52px;
+  max-width: 100%;
   height: auto;
   object-fit: contain;
 }
 .footer-org-name {
   font-size: 12px;
-  color: rgba(255,255,255,0.62);
+  color: var(--ink-faint);
   letter-spacing: 0.01em;
   margin-top: 2px;
 }
@@ -1856,11 +1867,11 @@ section { padding: 112px 32px; }
   max-width: 1280px;
   margin: 56px auto 0;
   padding-top: 28px;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid var(--line);
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: rgba(255,255,255,0.42);
+  color: var(--ink-faint);
   flex-wrap: wrap;
   gap: 16px;
   letter-spacing: 0.02em;
@@ -2912,6 +2923,7 @@ section { padding: 112px 32px; }
   <div class="footer-inner">
 
     <div class="footer-brand">
+      <img src="./assets/logo_lineart.png" alt="갯것이 마스코트 · 긴발가락참집게 + 수두리 보말" class="footer-mascot">
       <div class="footer-name">갯것이 영화제<span>×</span>생태관광 주간</div>
       <div class="footer-edition">The 3rd Edition · 2026</div>
       <p class="footer-desc">
