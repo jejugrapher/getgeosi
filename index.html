@@ -477,6 +477,17 @@ section { padding: 112px 32px; }
   font-weight: 600;
 }
 .intro-block-body strong { color: var(--teal-deep); }
+.intro-block-conclusion {
+  margin: 18px 0 0;
+  padding: 14px 20px;
+  background: linear-gradient(90deg, rgba(28, 94, 126, 0.06) 0%, rgba(28, 94, 126, 0.02) 100%);
+  border-left: 3px solid var(--teal);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--teal-deep);
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
 
 /* 발자취 헤더 */
 .intro-history { margin-top: 12px; }
@@ -538,7 +549,7 @@ section { padding: 112px 32px; }
    ECO — 생태관광 (primary, teal 계열)
    ============================================================ */
 .eco {
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+  background: linear-gradient(180deg, var(--teal-deep) 0%, #0F3A4B 100%);
   position: relative;
   overflow: hidden;
 }
@@ -549,10 +560,34 @@ section { padding: 112px 32px; }
   font-size: 200px;
   font-weight: 200;
   line-height: 1;
-  color: var(--teal);
-  opacity: 0.07;
+  color: var(--sand-light);
+  opacity: 0.09;
   letter-spacing: -0.04em;
   pointer-events: none;
+}
+/* 하단 은은한 광원 효과 */
+.eco::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 120px;
+  background: radial-gradient(ellipse at 20% 100%, rgba(212, 184, 150, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 100%, rgba(212, 184, 150, 0.05) 0%, transparent 55%);
+  pointer-events: none;
+}
+/* ECO 섹션 내부 헤더 텍스트를 밝은 톤으로 */
+.eco .section-eyebrow {
+  color: var(--sand-light);
+  opacity: 0.9;
+}
+.eco .section-title {
+  color: white;
+}
+.eco .section-title .em {
+  color: var(--sand-light);
+}
+.eco .section-lead {
+  color: rgba(255, 255, 255, 0.78);
 }
 .eco-header {
   display: flex;
@@ -561,8 +596,10 @@ section { padding: 112px 32px; }
   gap: 32px;
   margin-bottom: 64px;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
 }
-.eco-count { color: var(--teal); }
+.eco-count { color: var(--sand-light); }
 .eco-count strong {
   font-size: 80px;
   font-weight: 200;
@@ -570,11 +607,12 @@ section { padding: 112px 32px; }
   line-height: 1;
   margin-bottom: 4px;
   letter-spacing: -0.04em;
+  color: var(--sand-light);
 }
 .eco-count-x {
   font-weight: 200;
   font-size: 0.55em;
-  color: var(--sand-deep);
+  color: rgba(255, 255, 255, 0.5);
   margin: 0 0.06em;
   vertical-align: 0.14em;
 }
@@ -583,6 +621,7 @@ section { padding: 112px 32px; }
   letter-spacing: 0.15em;
   text-transform: uppercase;
   font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .eco-grid {
@@ -769,17 +808,21 @@ section { padding: 112px 32px; }
   box-shadow: var(--shadow-lg);
 }
 .film-poster {
-  aspect-ratio: 2/3;
+  aspect-ratio: 3/4;
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, var(--teal) 0%, var(--teal-deep) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 .film-poster img {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: center center;
+  display: block;
 }
 .film-poster.opening { background: linear-gradient(135deg, #5B7A9C 0%, #2D4F6E 100%); }
 .film-poster.closing { background: linear-gradient(135deg, #2D4660 0%, #16263A 100%); }
@@ -1426,7 +1469,34 @@ section { padding: 112px 32px; }
 /* ============================================================
    LOCATION — Leaflet 인터랙티브 지도
    ============================================================ */
-.location { background: var(--bg-deep); }
+.location {
+  background: linear-gradient(180deg, var(--teal-deep) 0%, #0F3A4B 100%);
+  position: relative;
+  overflow: hidden;
+}
+.location::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 120px;
+  background: radial-gradient(ellipse at 20% 100%, rgba(212, 184, 150, 0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 100%, rgba(212, 184, 150, 0.05) 0%, transparent 55%);
+  pointer-events: none;
+}
+/* LOCATION 섹션 내부 헤더 텍스트를 밝은 톤으로 */
+.location .section-eyebrow {
+  color: var(--sand-light);
+  opacity: 0.9;
+}
+.location .section-title {
+  color: white;
+}
+.location .section-title .em {
+  color: var(--sand-light);
+}
+.location .section-lead {
+  color: rgba(255, 255, 255, 0.78);
+}
 
 .map-wrap {
   position: relative;
@@ -1673,8 +1743,11 @@ section { padding: 112px 32px; }
   letter-spacing: 0.02em;
 }
 
-/* Leaflet 커스텀 마커 (divIcon) */
+/* Leaflet 커스텀 마커 (divIcon)
+   box-sizing: border-box로 border를 크기 내부에 포함시켜야
+   iconSize/iconAnchor가 시각적 중심과 정확히 일치함 */
 .venue-marker {
+  box-sizing: border-box;
   background: var(--sand-deep);
   border: 2.5px solid #fff;
   border-radius: 50%;
@@ -1686,6 +1759,7 @@ section { padding: 112px 32px; }
 .venue-marker.film { background: var(--teal); }
 .venue-marker:hover { transform: scale(1.15); }
 .venue-marker.primary {
+  box-sizing: border-box;
   width: 22px;
   height: 22px;
   background: var(--teal);
@@ -2033,7 +2107,7 @@ section { padding: 112px 32px; }
       제3회 갯것이영화제<span class="x">×</span>2026생태관광주간
     </h1>
     <div class="hero-subtitle reveal" style="transition-delay: 0.15s;">
-      파도 속으로, 나만의 계절이 되다
+      8일간의 바다 여행
     </div>
     <div class="hero-meta reveal" style="transition-delay: 0.3s;">
       <div class="hero-meta-item">
@@ -2121,6 +2195,7 @@ section { padding: 112px 32px; }
           <p class="intro-block-body">
             <span class="accent">'갯것이'</span>는 바다에 사는 모든 것 — 깊은 바다의 큰 고래부터 갯바위의 작은 생물, 그리고 바다에 삶의 터를 둔 사람까지 모두 갯것이입니다. 갯것이영화제는 바다 환경 파괴에 눈감지 않으면서도, <span class="accent">아름답고 풍요로운 바다의 본질을 알리는 데</span> 초점을 두는 영화제입니다.
           </p>
+          <p class="intro-block-conclusion">풍요로운 바다를 알리는 영화제입니다.</p>
         </div>
 
         <!-- 신규 · 생태관광주간 -->
@@ -2176,7 +2251,7 @@ section { padding: 112px 32px; }
 
     <div class="eco-grid">
 
-      <!-- 01. 제주바당 생물탐험 -->
+      <!-- 01. 제주바당 생물탐험 (지시 #2) -->
       <div class="eco-card reveal" data-gallery="01_saengmul" data-gallery-title="제주바당 생물탐험" data-gallery-count="9" style="background-image:url('./assets/eco_01_saengmul.jpg');">
         <div class="eco-card-shade"></div>
         <div class="eco-card-inner">
@@ -2184,10 +2259,10 @@ section { padding: 112px 32px; }
           <h3 class="eco-card-title">제주바당 생물탐험</h3>
           <div class="eco-card-kind">운영 <strong>깅이와 바당</strong></div>
           <dl class="eco-card-meta">
-            <dt>일정</dt><dd>8/11 화 · 8/12 수 <span class="time-tbd">(시간 안내 예정)</span></dd>
-            <dt>장소</dt><dd>성산 수마포 · 서귀포시 상예동 977</dd>
-            <dt>참가비</dt><dd>20,000원</dd>
-            <dt>정원</dt><dd>15명 / 일</dd>
+            <dt>일정</dt><dd>8/11 화 13:00~14:30 · 8/12 수 14:00~15:30</dd>
+            <dt>장소</dt><dd>11일 성산 수마포 · 12일 하예 조간대</dd>
+            <dt>체험비</dt><dd>0원 <span class="time-tbd">(확정 예정)</span></dd>
+            <dt>준비물</dt><dd>물에 젖어도 되는 신발·옷, 채집도구(뜰채), 모자 · 손발 선크림 X</dd>
           </dl>
           <div class="eco-card-cta">
             <span>현장 사진 9장</span>
@@ -2196,47 +2271,47 @@ section { padding: 112px 32px; }
         </div>
       </div>
 
-      <!-- 02. 바다야 안녕 -->
-      <div class="eco-card reveal" data-gallery="02_badaya" data-gallery-title="바다야 안녕" data-gallery-count="5" style="transition-delay: 0.05s; background-image:url('./assets/eco_02_badaya.jpg');">
+      <!-- 02. 바다야 안녕 (지시 #3) -->
+      <div class="eco-card reveal" data-gallery="02_badaya" data-gallery-title="바다야 안녕" data-gallery-count="4" style="transition-delay: 0.05s; background-image:url('./assets/eco_02_badaya.jpg');">
         <div class="eco-card-shade"></div>
         <div class="eco-card-inner">
-          <div class="eco-card-num">02 · 스쿠버다이빙 체험</div>
+          <div class="eco-card-num">02 · 체험 스쿠버</div>
           <h3 class="eco-card-title">바다야 안녕</h3>
-          <div class="eco-card-kind">운영 <strong>물고기반</strong></div>
+          <div class="eco-card-kind">운영 <strong>해양시민과학조사단</strong></div>
           <dl class="eco-card-meta">
-            <dt>일정</dt><dd>8/10 — 8/15 <span class="time-tbd">(시간 안내 예정)</span></dd>
-            <dt>장소</dt><dd>보목항</dd>
-            <dt>참가비</dt><dd>100,000원</dd>
-            <dt>정원</dt><dd>오전 10명 · 오후 10명</dd>
+            <dt>일정</dt><dd>8/10 — 8/15 · 오전 10:00~12:00, 오후 14:00~16:00 <span class="time-tbd">(바다 상황에 따라 변동)</span></dd>
+            <dt>장소</dt><dd>보목포구</dd>
+            <dt>체험비</dt><dd>100,000원</dd>
+            <dt>준비물</dt><dd>수영복, 래쉬가드 또는 워터레깅스, 타올</dd>
           </dl>
           <div class="eco-card-cta">
-            <span>현장 사진 5장</span>
+            <span>현장 사진 4장</span>
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </div>
         </div>
       </div>
 
-      <!-- 03. 바당에 퐁당 -->
-      <div class="eco-card reveal" data-gallery="03_pungdang" data-gallery-title="바당에 퐁당" data-gallery-count="12" style="transition-delay: 0.1s; background-image:url('./assets/eco_03_pungdang.jpg');">
+      <!-- 03. 바당에 퐁당 (지시 #4) -->
+      <div class="eco-card reveal" data-gallery="03_pungdang" data-gallery-title="바당에 퐁당" data-gallery-count="9" style="transition-delay: 0.1s; background-image:url('./assets/eco_03_pungdang.jpg');">
         <div class="eco-card-shade"></div>
         <div class="eco-card-inner">
-          <div class="eco-card-num">03 · 스쿠버다이빙 체험</div>
+          <div class="eco-card-num">03 · 체험 다이빙</div>
           <h3 class="eco-card-title">바당에 퐁당</h3>
-          <div class="eco-card-kind">운영 <strong>제주시 스킨스쿠버협회</strong></div>
+          <div class="eco-card-kind">운영 <strong>제주시 수중핀수영협회</strong></div>
           <dl class="eco-card-meta">
-            <dt>일정</dt><dd>8/10 — 8/12 <span class="time-tbd">(시간 안내 예정)</span></dd>
-            <dt>장소</dt><dd>이호항 (제주시 이호일동 375-43)</dd>
-            <dt>참가비</dt><dd>100,000원</dd>
-            <dt>정원</dt><dd>오전 10명 · 오후 10명</dd>
+            <dt>일정</dt><dd>8/10 — 8/13 · 오전 10:00~12:00, 오후 14:00~16:00 <span class="time-tbd">(바다 상황에 따라 변동)</span></dd>
+            <dt>장소</dt><dd>사수항 또는 이호항 <span class="time-tbd">(현장 상황에 따라 결정 후 공지)</span></dd>
+            <dt>체험비</dt><dd>100,000원</dd>
+            <dt>준비물</dt><dd>수영복, 래쉬가드 또는 워터레깅스, 타올</dd>
           </dl>
           <div class="eco-card-cta">
-            <span>현장 사진 12장</span>
+            <span>현장 사진 9장</span>
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </div>
         </div>
       </div>
 
-      <!-- 04. 하도리 해녀체험 -->
+      <!-- 04. 하도리 해녀체험 (지시 #5) -->
       <div class="eco-card reveal" data-gallery="04_haenyeo" data-gallery-title="하도리 해녀체험" data-gallery-count="7" style="transition-delay: 0.15s; background-image:url('./assets/eco_04_haenyeo.jpg');">
         <div class="eco-card-shade"></div>
         <div class="eco-card-inner">
@@ -2244,10 +2319,10 @@ section { padding: 112px 32px; }
           <h3 class="eco-card-title">하도리 해녀체험</h3>
           <div class="eco-card-kind">운영 <strong>하도리 어촌계</strong></div>
           <dl class="eco-card-meta">
-            <dt>일정</dt><dd>8/10 — 8/13 <span class="time-tbd">(시간 안내 예정)</span></dd>
-            <dt>장소</dt><dd>하도어촌체험마을</dd>
-            <dt>참가비</dt><dd>40,000원</dd>
-            <dt>정원</dt><dd>15명 / 일</dd>
+            <dt>일정</dt><dd>8/10 — 8/13 · 오전 10:30, 오후 14:00</dd>
+            <dt>장소</dt><dd>하도 어촌 체험마을</dd>
+            <dt>체험비</dt><dd>40,000원</dd>
+            <dt>준비물</dt><dd>수영복, 래쉬가드 또는 워터레깅스, 타올</dd>
           </dl>
           <div class="eco-card-cta">
             <span>현장 사진 7장</span>
@@ -2256,18 +2331,18 @@ section { padding: 112px 32px; }
         </div>
       </div>
 
-      <!-- 05. 돌고래와 바다여행 -->
+      <!-- 05. 돌고래와 바다여행 (지시 #6) -->
       <div class="eco-card reveal" data-gallery="05_dolphin" data-gallery-title="돌고래와 바다여행" data-gallery-count="9" style="transition-delay: 0.2s; background-image:url('./assets/eco_05_dolphin.jpg');">
         <div class="eco-card-shade"></div>
         <div class="eco-card-inner">
           <div class="eco-card-num">05 · 패들보드 체험</div>
           <h3 class="eco-card-title">돌고래와 바다여행</h3>
-          <div class="eco-card-kind">운영 <strong>다시바다</strong></div>
+          <div class="eco-card-kind">운영 <strong>금능어촌계</strong></div>
           <dl class="eco-card-meta">
-            <dt>일정</dt><dd>8/11 — 8/14 <span class="time-tbd">(시간 안내 예정)</span></dd>
-            <dt>장소</dt><dd>삼양해수욕장</dd>
-            <dt>참가비</dt><dd>20,000원</dd>
-            <dt>정원</dt><dd>10명 / 일</dd>
+            <dt>일정</dt><dd>8/11 — 8/14 · 1차 오전 10:00~12:00, 2차 오후 17:00~19:00</dd>
+            <dt>장소</dt><dd>금능어촌계 (한림읍 금능리)</dd>
+            <dt>체험비</dt><dd>20,000원</dd>
+            <dt>준비물</dt><dd>간편한 복장, 목베개, 모자, 선글라스, 캠핑용 의자</dd>
           </dl>
           <div class="eco-card-cta">
             <span>현장 사진 9장</span>
@@ -2276,7 +2351,7 @@ section { padding: 112px 32px; }
         </div>
       </div>
 
-      <!-- 06. 하도 투명한 바다 -->
+      <!-- 06. 하도 투명한 바다 (지시 #7) -->
       <div class="eco-card reveal" data-gallery="06_kayak" data-gallery-title="하도 투명한 바다" data-gallery-count="20" style="transition-delay: 0.25s; background-image:url('./assets/eco_06_kayak.jpg');">
         <div class="eco-card-shade"></div>
         <div class="eco-card-inner">
@@ -2284,10 +2359,10 @@ section { padding: 112px 32px; }
           <h3 class="eco-card-title">하도 투명한 바다</h3>
           <div class="eco-card-kind">운영 <strong>제주하도카약</strong></div>
           <dl class="eco-card-meta">
-            <dt>일정</dt><dd>8/10 — 8/14 <span class="time-tbd">(시간 안내 예정)</span></dd>
-            <dt>장소</dt><dd>제주하도카약</dd>
-            <dt>참가비</dt><dd>10,000원</dd>
-            <dt>정원</dt><dd>50명 / 회</dd>
+            <dt>일정</dt><dd>8/10 — 8/15 · 09:00 ~ 18:00 <span class="time-tbd">(바다 상황에 따라 변동)</span></dd>
+            <dt>장소</dt><dd>제주시 구좌읍 하도리 43-4 · 하도카약</dd>
+            <dt>체험비</dt><dd>-</dd>
+            <dt>준비물</dt><dd>평상복 차림 · 물놀이 시 수영복 · 온수 샤워장 무료 이용</dd>
           </dl>
           <div class="eco-card-cta">
             <span>현장 사진 20장</span>
@@ -2468,7 +2543,7 @@ section { padding: 112px 32px; }
           <div class="film-meta">한국 · 47분 · 8K</div>
           <h3 class="film-title">코랄트라이앵글 이상한 놈들의 세상</h3>
           <p class="film-tagline">'바다의 아마존' 코랄 트라이앵글을 기록하다</p>
-          <div class="film-director">감독 <strong>임완호·육성우</strong> · 출연 김동식 수중촬영감독 · DMZWILD</div>
+          <div class="film-director">촬영·출연 <strong>김동식</strong> 촬영감독</div>
           <div class="film-screening">
             <div class="film-screening-line">
               <span class="film-screening-date">8/15 토</span>
@@ -2580,9 +2655,9 @@ section { padding: 112px 32px; }
         </div>
         <div class="cal-films"><span class="cal-noop">영화 상영 없음</span></div>
         <div class="cal-ecos">
-          <span class="cal-eco-chip">바다야 안녕 · 보목항</span>
-          <span class="cal-eco-chip">바당에 퐁당 · 이호항</span>
-          <span class="cal-eco-chip">하도리 해녀체험 · 하도어촌체험마을</span>
+          <span class="cal-eco-chip">바다야 안녕 · 보목포구</span>
+          <span class="cal-eco-chip">바당에 퐁당 · 사수항 or 이호항</span>
+          <span class="cal-eco-chip">하도리 해녀체험 · 하도 어촌 체험마을</span>
           <span class="cal-eco-chip">하도 투명한 바다 · 제주하도카약</span>
         </div>
       </div>
@@ -2604,11 +2679,11 @@ section { padding: 112px 32px; }
           </div>
         </div>
         <div class="cal-ecos">
-          <span class="cal-eco-chip">제주바당 생물탐험 · 성산 수마포</span>
-          <span class="cal-eco-chip">바다야 안녕 · 보목항</span>
-          <span class="cal-eco-chip">바당에 퐁당 · 이호항</span>
-          <span class="cal-eco-chip">하도리 해녀체험 · 하도어촌체험마을</span>
-          <span class="cal-eco-chip">돌고래와 바다여행 · 삼양해수욕장</span>
+          <span class="cal-eco-chip">제주바당 생물탐험 · 성산 수마포 <em>(13:00~14:30)</em></span>
+          <span class="cal-eco-chip">바다야 안녕 · 보목포구</span>
+          <span class="cal-eco-chip">바당에 퐁당 · 사수항 or 이호항</span>
+          <span class="cal-eco-chip">하도리 해녀체험 · 하도 어촌 체험마을</span>
+          <span class="cal-eco-chip">돌고래와 바다여행 · 금능어촌계</span>
           <span class="cal-eco-chip">하도 투명한 바다 · 제주하도카약</span>
         </div>
       </div>
@@ -2630,11 +2705,11 @@ section { padding: 112px 32px; }
           </div>
         </div>
         <div class="cal-ecos">
-          <span class="cal-eco-chip">제주바당 생물탐험 · 상예동 977</span>
-          <span class="cal-eco-chip">바다야 안녕 · 보목항</span>
-          <span class="cal-eco-chip">바당에 퐁당 · 이호항</span>
-          <span class="cal-eco-chip">하도리 해녀체험 · 하도어촌체험마을</span>
-          <span class="cal-eco-chip">돌고래와 바다여행 · 삼양해수욕장</span>
+          <span class="cal-eco-chip">제주바당 생물탐험 · 하예 조간대 <em>(14:00~15:30)</em></span>
+          <span class="cal-eco-chip">바다야 안녕 · 보목포구</span>
+          <span class="cal-eco-chip">바당에 퐁당 · 사수항 or 이호항</span>
+          <span class="cal-eco-chip">하도리 해녀체험 · 하도 어촌 체험마을</span>
+          <span class="cal-eco-chip">돌고래와 바다여행 · 금능어촌계</span>
           <span class="cal-eco-chip">하도 투명한 바다 · 제주하도카약</span>
         </div>
       </div>
@@ -2647,9 +2722,9 @@ section { padding: 112px 32px; }
         </div>
         <div class="cal-films"><span class="cal-noop">영화 상영 없음</span></div>
         <div class="cal-ecos">
-          <span class="cal-eco-chip">바다야 안녕 · 보목항</span>
-          <span class="cal-eco-chip">하도리 해녀체험 · 하도어촌체험마을</span>
-          <span class="cal-eco-chip">돌고래와 바다여행 · 삼양해수욕장</span>
+          <span class="cal-eco-chip">바다야 안녕 · 보목포구</span>
+          <span class="cal-eco-chip">하도리 해녀체험 · 하도 어촌 체험마을</span>
+          <span class="cal-eco-chip">돌고래와 바다여행 · 금능어촌계</span>
           <span class="cal-eco-chip">하도 투명한 바다 · 제주하도카약</span>
         </div>
       </div>
@@ -2679,8 +2754,8 @@ section { padding: 112px 32px; }
           </div>
         </div>
         <div class="cal-ecos">
-          <span class="cal-eco-chip">바다야 안녕 · 보목항</span>
-          <span class="cal-eco-chip">돌고래와 바다여행 · 삼양해수욕장</span>
+          <span class="cal-eco-chip">바다야 안녕 · 보목포구</span>
+          <span class="cal-eco-chip">돌고래와 바다여행 · 금능어촌계</span>
           <span class="cal-eco-chip">하도 투명한 바다 · 제주하도카약</span>
         </div>
       </div>
@@ -2697,7 +2772,7 @@ section { padding: 112px 32px; }
             <span class="cal-slot-time">14:00</span>
             <div class="cal-slot-body">
               <span class="cal-slot-title">코랄트라이앵글 이상한 놈들의 세상 <small>· 45분</small></span>
-              <span class="cal-slot-desc">14:50 GV — 임완호·김동식 감독</span>
+              <span class="cal-slot-desc">14:50 GV — 촬영·출연 김동식 촬영감독</span>
               <span class="cal-slot-place">연동 롯데시네마</span>
             </div>
           </div>
@@ -2710,7 +2785,7 @@ section { padding: 112px 32px; }
           </div>
         </div>
         <div class="cal-ecos">
-          <span class="cal-eco-chip">바다야 안녕 · 보목항 <em>(마지막일)</em></span>
+          <span class="cal-eco-chip">바다야 안녕 · 보목포구 <em>(마지막일)</em></span>
         </div>
       </div>
 
@@ -2753,7 +2828,7 @@ section { padding: 112px 32px; }
           <div class="mmx-title">제주바당 생물탐험</div>
           <div>해양생태 해설</div>
           <div>깅이와 바당</div>
-          <div>8/11 성산 수마포 · 8/12 상예동 977</div>
+          <div>8/11 성산 수마포 · 8/12 하예 조간대</div>
           <div>20,000원</div>
           <div>15명/일</div>
           <div class="mmx-days">
@@ -2765,8 +2840,8 @@ section { padding: 112px 32px; }
         <div class="mmx-row">
           <div class="mmx-title">바다야 안녕</div>
           <div>스쿠버다이빙 체험</div>
-          <div>물고기반</div>
-          <div>보목항</div>
+          <div>해양시민과학조사단</div>
+          <div>보목포구</div>
           <div>100,000원</div>
           <div>오전 10명 · 오후 10명</div>
           <div class="mmx-days">
@@ -2778,8 +2853,8 @@ section { padding: 112px 32px; }
         <div class="mmx-row">
           <div class="mmx-title">바당에 퐁당</div>
           <div>스쿠버다이빙 체험</div>
-          <div>제주시 스킨스쿠버협회</div>
-          <div>이호항 (이호일동 375-43)</div>
+          <div>제주시 수중핀수영협회</div>
+          <div>사수항 or 이호항 (현장 결정)</div>
           <div>100,000원</div>
           <div>오전 10명 · 오후 10명</div>
           <div class="mmx-days">
@@ -2804,8 +2879,8 @@ section { padding: 112px 32px; }
         <div class="mmx-row">
           <div class="mmx-title">돌고래와 바다여행</div>
           <div>패들보드 체험</div>
-          <div>다시바다</div>
-          <div>삼양해수욕장</div>
+          <div>금능어촌계</div>
+          <div>금능리 (한림읍)</div>
           <div>20,000원</div>
           <div>10명/일</div>
           <div class="mmx-days">
@@ -2846,7 +2921,7 @@ section { padding: 112px 32px; }
       <span class="em">서쪽 끝까지</span>
     </h2>
     <p class="section-lead reveal" style="transition-delay: 0.1s;">
-      메인 상영관은 연동 롯데시네마. 조수웅덩이는 해양동물박물관·예례생태체험관, 101은 카페 핀스(대정)에서 상영합니다. 우측 리스트에서 프로그램을 선택하면 지도에서 위치를 확인할 수 있습니다.
+      메인 상영관은 연동 롯데시네마. 조수웅덩이는 해양동물박물관·예례생태체험관, 101은 카페 핀스(대정)에서 상영합니다. 생태 프로그램은 보목·사수·이호·하도·금능·성산·하예 권역에서 운영됩니다. 우측 리스트에서 프로그램을 선택하면 지도에서 위치를 확인할 수 있습니다.
     </p>
 
     <div class="map-wrap reveal">
@@ -2905,39 +2980,46 @@ section { padding: 112px 32px; }
                 <em>8/11 · 성산 수마포</em>
               </span>
             </button></li>
-            <li><button class="map-item" type="button" data-venue="상예동 977">
+            <li><button class="map-item" type="button" data-venue="하예 조간대">
               <span class="map-item-num">01</span>
               <span class="map-item-body">
                 <strong>제주바당 생물탐험</strong>
-                <em>8/12 · 서귀포시 상예동 977</em>
+                <em>8/12 · 하예 조간대</em>
               </span>
             </button></li>
-            <li><button class="map-item" type="button" data-venue="보목항">
+            <li><button class="map-item" type="button" data-venue="보목포구">
               <span class="map-item-num">02</span>
               <span class="map-item-body">
                 <strong>바다야 안녕</strong>
-                <em>스쿠버다이빙 · 보목항</em>
+                <em>체험 스쿠버 · 보목포구</em>
+              </span>
+            </button></li>
+            <li><button class="map-item" type="button" data-venue="사수항">
+              <span class="map-item-num">03</span>
+              <span class="map-item-body">
+                <strong>바당에 퐁당</strong>
+                <em>체험 다이빙 · 사수항</em>
               </span>
             </button></li>
             <li><button class="map-item" type="button" data-venue="이호항">
               <span class="map-item-num">03</span>
               <span class="map-item-body">
                 <strong>바당에 퐁당</strong>
-                <em>스쿠버다이빙 · 이호항</em>
+                <em>체험 다이빙 · 이호항</em>
               </span>
             </button></li>
             <li><button class="map-item" type="button" data-venue="하도어촌체험마을">
               <span class="map-item-num">04</span>
               <span class="map-item-body">
                 <strong>하도리 해녀체험</strong>
-                <em>해녀 체험 · 하도어촌체험마을</em>
+                <em>해녀 체험 · 하도 어촌 체험마을</em>
               </span>
             </button></li>
-            <li><button class="map-item" type="button" data-venue="삼양해수욕장">
+            <li><button class="map-item" type="button" data-venue="금능어촌계">
               <span class="map-item-num">05</span>
               <span class="map-item-body">
                 <strong>돌고래와 바다여행</strong>
-                <em>패들보드 · 삼양해수욕장</em>
+                <em>패들보드 · 금능어촌계</em>
               </span>
             </button></li>
             <li><button class="map-item" type="button" data-venue="제주하도카약">
@@ -3015,10 +3097,9 @@ section { padding: 112px 32px; }
 
     <div class="footer-brand">
       <img src="./assets/logo_lineart.png" alt="갯것이 마스코트 · 긴발가락참집게 + 수두리 보말" class="footer-mascot">
-      <div class="footer-name">갯것이 영화제<span>×</span>생태관광 주간</div>
-      <div class="footer-edition">The 3rd Edition · 2026</div>
+      <div class="footer-name">제3회 갯것이영화제<span>×</span>2026생태관광주간</div>
       <p class="footer-desc">
-        2026년 8월 8일 — 8월 15일, 제주 전역. 생태 프로그램 6개 · 영화 6편 · 8일.
+        2026년 8월 8일 — 8월 15일, 제주 전역. 생태 프로그램 6개 · 영화 6편 · 8일간의 바다 여행.
       </p>
     </div>
 
@@ -3036,9 +3117,9 @@ section { padding: 112px 32px; }
     <div>
       <h5>Contact</h5>
       <ul>
-        <li>제3회 갯것이 영화제 사무국</li>
-        <li>집행위원장 임형묵</li>
-        <li><a href="tel:0647823253">관람·체험 문의 064-782-3253</a></li>
+        <li>제3회 갯것이영화제 사무국</li>
+        <li>제주 생태관광지원센터 센터장 임형묵</li>
+        <li><a href="tel:0647823253">영화제 및 생태관광주간 프로그램 관련 문의 064-782-3253</a></li>
       </ul>
     </div>
 
@@ -3167,15 +3248,15 @@ const galleryData = {
   },
   "02_badaya": {
     num: "02",
-    kind: "스쿠버다이빙 체험",
-    count: 5,
-    images: Array.from({length: 5}, (_, i) => `./assets/gal_02_badaya_${String(i+1).padStart(2, '0')}.jpg`)
+    kind: "체험 스쿠버",
+    count: 4,
+    images: Array.from({length: 4}, (_, i) => `./assets/gal_02_badaya_${String(i+1).padStart(2, '0')}.jpg`)
   },
   "03_pungdang": {
     num: "03",
-    kind: "스쿠버다이빙 체험",
-    count: 12,
-    images: Array.from({length: 12}, (_, i) => `./assets/gal_03_pungdang_${String(i+1).padStart(2, '0')}.jpg`)
+    kind: "체험 다이빙",
+    count: 9,
+    images: Array.from({length: 9}, (_, i) => `./assets/gal_03_pungdang_${String(i+1).padStart(2, '0')}.jpg`)
   },
   "04_haenyeo": {
     num: "04",
@@ -3319,7 +3400,7 @@ document.addEventListener('keydown', (e) => {
   const mapEl = document.getElementById('jeju-map');
   if (!mapEl) return;
 
-  // 권역 데이터 (2026.07.06 수정 지시 반영)
+  // 권역 데이터 (2026.07.07 3차 수정 반영)
   const VENUES = [
     // 영화 상영관 (film)
     {
@@ -3354,22 +3435,28 @@ document.addEventListener('keydown', (e) => {
       desc: '제주바당 생물탐험 · 8/11 · 깅이와 바당 임형묵 감독'
     },
     {
-      name: '상예동 977', category: 'eco',
-      lat: 33.241109, lng: 126.396257,
-      address: '서귀포시 상예동 977',
+      name: '하예 조간대', category: 'eco',
+      lat: 33.233926, lng: 126.375417,
+      address: '서귀포시 하예동 (하예포구 인근)',
       desc: '제주바당 생물탐험 · 8/12 · 깅이와 바당 임형묵 감독'
     },
     {
-      name: '보목항', category: 'eco',
-      lat: 33.238353, lng: 126.608280,
-      address: '서귀포시 보목동 566-3',
-      desc: '바다야 안녕 · 스쿠버다이빙 (물고기반)'
+      name: '보목포구', category: 'eco',
+      lat: 33.239532, lng: 126.608169,
+      address: '서귀포시 보목동',
+      desc: '바다야 안녕 · 체험 스쿠버 (해양시민과학조사단)'
+    },
+    {
+      name: '사수항', category: 'eco',
+      lat: 33.509714, lng: 126.479003,
+      address: '제주시 도두동 (서해안로 319)',
+      desc: '바당에 퐁당 · 체험 다이빙 · 사수항 또는 이호항 (현장 결정)'
     },
     {
       name: '이호항', category: 'eco',
       lat: 33.501757, lng: 126.452059,
       address: '제주시 이호일동 375-43',
-      desc: '바당에 퐁당 · 스쿠버다이빙 (제주시 스킨스쿠버협회)'
+      desc: '바당에 퐁당 · 체험 다이빙 (제주시 수중핀수영협회)'
     },
     {
       name: '하도어촌체험마을', category: 'eco',
@@ -3378,10 +3465,10 @@ document.addEventListener('keydown', (e) => {
       desc: '하도리 해녀체험 · 물질 체험 (하도리 어촌계)'
     },
     {
-      name: '삼양해수욕장', category: 'eco',
-      lat: 33.526028, lng: 126.586914,
-      address: '제주시 삼양동',
-      desc: '돌고래와 바다여행 · 패들보드 (다시바다)'
+      name: '금능어촌계', category: 'eco',
+      lat: 33.389911, lng: 126.227840,
+      address: '제주시 한림읍 금능리',
+      desc: '돌고래와 바다여행 · 패들보드 (금능어촌계)'
     },
     {
       name: '제주하도카약', category: 'eco',
@@ -3421,16 +3508,52 @@ document.addEventListener('keydown', (e) => {
   // 마커 저장 (name 키 → marker 인스턴스)
   const markersByName = {};
 
+  // 색상 팔레트 (CSS 변수와 동일)
+  const COLORS = {
+    teal: '#1C5E7E',
+    tealDeep: '#144658',
+    sandDeep: '#B89770',
+    white: '#ffffff'
+  };
+
   // 마커 렌더링
+  // L.circleMarker는 SVG 벡터 원을 그리며 좌표에 원의 중심이 정확히 위치함이 보장됨
+  // (기존 divIcon 방식은 CSS border/box-sizing 이슈로 위치 어긋남 발생)
   VENUES.forEach(v => {
-    const cls = 'venue-marker ' + v.category + (v.primary ? ' primary' : '');
-    const size = v.primary ? 22 : 16;
-    const icon = L.divIcon({
-      className: cls,
-      iconSize: [size, size],
-      iconAnchor: [size/2, size/2],
-      html: ''
-    });
+    // primary용 반투명 후광 (halo) - 클릭 불가
+    if (v.primary) {
+      L.circleMarker([v.lat, v.lng], {
+        radius: 14,
+        stroke: false,
+        fillColor: COLORS.teal,
+        fillOpacity: 0.18,
+        interactive: false,
+        pane: 'markerPane'
+      }).addTo(map);
+    }
+
+    // 메인 마커 - 원
+    const fillColor = v.category === 'film' ? COLORS.teal : COLORS.sandDeep;
+    const marker = L.circleMarker([v.lat, v.lng], {
+      radius: v.primary ? 8.5 : 6.5,
+      color: COLORS.white,
+      weight: 2.5,
+      fillColor: fillColor,
+      fillOpacity: 1,
+      className: 'venue-marker-svg ' + v.category + (v.primary ? ' primary' : '')
+    }).addTo(map);
+
+    // primary 내부 흰 점 - 클릭 불가
+    if (v.primary) {
+      L.circleMarker([v.lat, v.lng], {
+        radius: 2.5,
+        stroke: false,
+        fillColor: COLORS.white,
+        fillOpacity: 1,
+        interactive: false
+      }).addTo(map);
+    }
+
     const catLabel = v.category === 'film' ? '영화 상영' : '생태 프로그램';
     const noteHtml = v.note ? `<div class="popup-venue-addr" style="color:var(--shell);">${v.note}</div>` : '';
     const popupHtml = `
@@ -3440,9 +3563,7 @@ document.addEventListener('keydown', (e) => {
       <div class="popup-venue-addr">${v.address}</div>
       ${noteHtml}
     `;
-    const marker = L.marker([v.lat, v.lng], { icon })
-      .addTo(map)
-      .bindPopup(popupHtml, { maxWidth: 300, autoPanPadding: [40, 60] });
+    marker.bindPopup(popupHtml, { maxWidth: 300, autoPanPadding: [40, 60] });
     markersByName[v.name] = { marker, lat: v.lat, lng: v.lng };
   });
 
